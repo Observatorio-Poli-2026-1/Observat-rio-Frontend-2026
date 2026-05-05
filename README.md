@@ -349,4 +349,4 @@ Bug 9: Criação de Artigos em Branco sem Validação de Campos Obrigatórios
 
 ##Os bugs 01, 02, 03 e 08 estão no backend.
 
-Bug
+Bugs
