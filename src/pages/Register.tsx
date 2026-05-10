@@ -15,6 +15,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // Requisitos de senha
@@ -39,43 +40,49 @@ const Register = () => {
   const allRequirementsMet = Object.values(passwordRequirements).every(Boolean);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
+  setError('');
 
-    if (password !== confirmPassword) {
-      setError("As senhas não coincidem!");
-      return;
-    }
+  if (password !== confirmPassword) {
+    setError("As senhas não coincidem!");
+    return;
+  }
 
-    if (!allRequirementsMet) {
-      setError("A senha não atende a todos os requisitos.");
-      return;
-    }
+  if (!allRequirementsMet) {
+    setError("A senha não atende a todos os requisitos.");
+    return;
+  }
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@(poli\.br|ecomp\.poli\.br|upe\.br)$/;
-    if (!emailRegex.test(email)) {
-      setError("Apenas e-mails dos domínios @poli.br, @ecomp.poli.br ou @upe.br são permitidos.");
-      return;
-    }
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@(poli\.br|ecomp\.poli\.br|upe\.br)$/;
+  if (!emailRegex.test(email)) {
+    setError("Apenas e-mails dos domínios @poli.br, @ecomp.poli.br ou @upe.br são permitidos.");
+    return;
+  }
 
-    try {
-      const response = await axios.post('/register/', {
-          username,
-          email,
-          password,
-          is_admin: false,
-      });
+  try {
+    setLoading(true);
 
-      // Se chegou aqui, deu certo (2xx)
-      toast.success('Registro realizado com sucesso!');
+    await axios.post('/register/', {
+      username,
+      email,
+      password,
+      is_admin: false,
+    });
+
+    toast.success('Registro realizado com sucesso!');
+
+    setTimeout(() => {
       navigate('/login');
+    }, 1500);
 
-    } catch (error: any) {
-      console.error('Erro de rede:', error);
-      // Captura mensagem do backend se houver
-      const msg = error.response?.data?.message || "O endereço de e-mail já existe ou erro no servidor.";
-      setError(msg);
-    }
-  };
+  } catch (error: any) {
+    console.error('Erro de rede:', error);
+    const msg = error.response?.data?.message || "O endereço de e-mail já existe ou erro no servidor.";
+    setError(msg);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <>
@@ -193,10 +200,10 @@ const Register = () => {
 
             <button
               type="submit"
-              disabled={!allRequirementsMet || password !== confirmPassword}
+              disabled={loading || !allRequirementsMet || password !== confirmPassword}
               className="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition duration-300 disabled:bg-gray-500 disabled:cursor-not-allowed"
             >
-              Registrar
+              {loading ? 'Registrando...' : 'Registrar'}
             </button>
 
             <div className="mt-4 text-center">
