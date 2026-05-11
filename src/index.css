@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+  --primary-color: #132f8b;
+  --light-color: #D8DBE2;
+  --dark-color: #0D1321;
+}
+
+.bg-primary-color {
+  background-color: var(--primary-color);
+}
+
+.text-light-color {
+  color: var(--light-color);
+}
+
+.text-primary-color {
+  color: var(--primary-color);
+}
+
+.border-dark-color {
+  border-color: var(--dark-color);
+}
+
+.bg-dark-color {
+  background-color: var(--dark-color);
+}
+
+
+
+.carousel .control-dots .dot {
+    background: #fff !important;         /* Fundo branco */
+    border: 1px solid #333 !important;  /* Borda escura */
+    box-shadow: none !important;
+    opacity: 1 !important;
+}
+
+/* --- Cor do "pin" ATIVO (Escuro) --- */
+.carousel .control-dots .dot.selected {
+    background: #333 !important;         /* Fundo escuro */
+    border: 1px solid #333 !important;  /* Borda escura */
+}
