@@ -1,7 +1,11 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import backgroundImage from '../assets/mainpage.jpg'; // Certifique-se de que o caminho esteja correto
+import backgroundImage from '../assets/mainpage.jpg';
+import poliImg from '../assets/poli1.png';
+import upeLogoImg from '../assets/logo-upe-60.png';
+import ufpbLogoImg from '../assets/parceiros/ufpb.png';
+import sadLogoImg from '../assets/parceiros/sad-pe.png'; // Certifique-se de que o caminho esteja correto
 
 function Sobre() {
   return (
@@ -40,7 +44,7 @@ function Sobre() {
           <div className="w-full lg:w-1/2 flex justify-center">
             <img
               className="max-h-96 rounded-xl shadow-lg"
-              src="https://s2.glbimg.com/smbJLb6Jt92GrMIDOFacclQ7K0o=/s.glbimg.com/jo/g1/f/original/2015/05/11/poli1.jpg"
+              src={poliImg}
               alt="Escola Politécnica de Pernambuco"
             />
           </div>
@@ -53,17 +57,17 @@ function Sobre() {
           <h2 className="text-4xl font-bold mb-12">Nossos Parceiros</h2>
           <div className="flex flex-wrap justify-center items-center gap-8">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Logo-upe-site.png"
+              src={upeLogoImg}
               alt="UPE"
               className="h-16"
             />
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/6/69/Bras%C3%A3o_UFPB.png"
+              src={ufpbLogoImg}
               alt="UFPB"
               className="h-16"
             />
             <img
-              src="https://www.sad.pe.gov.br/assets/logo.png"
+              src={sadLogoImg}
               alt="SAD PE"
               className="h-16"
             />
