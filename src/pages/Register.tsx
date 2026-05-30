@@ -18,6 +18,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // Requisitos de senha
@@ -42,31 +43,34 @@ const Register = () => {
   const allRequirementsMet = Object.values(passwordRequirements).every(Boolean);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
+  setError('');
 
-    if (password !== confirmPassword) {
-      setError("As senhas não coincidem!");
-      return;
-    }
+  if (password !== confirmPassword) {
+    setError("As senhas não coincidem!");
+    return;
+  }
 
-    if (!allRequirementsMet) {
-      setError("A senha não atende a todos os requisitos.");
-      return;
-    }
+  if (!allRequirementsMet) {
+    setError("A senha não atende a todos os requisitos.");
+    return;
+  }
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@(poli\.br|ecomp\.poli\.br|upe\.br)$/;
-    if (!emailRegex.test(email)) {
-      setError("Apenas e-mails dos domínios @poli.br, @ecomp.poli.br ou @upe.br são permitidos.");
-      return;
-    }
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@(poli\.br|ecomp\.poli\.br|upe\.br)$/;
+  if (!emailRegex.test(email)) {
+    setError("Apenas e-mails dos domínios @poli.br, @ecomp.poli.br ou @upe.br são permitidos.");
+    return;
+  }
 
-    try {
-      const response = await axios.post('/register/', {
-          username,
-          email,
-          password,
-          is_admin: false,
-      });
+  try {
+    setLoading(true);
+
+    await axios.post('/register/', {
+      username,
+      email,
+      password,
+      is_admin: false,
+    });
 
       // Se chegou aqui, deu certo (2xx)
 <<<<<<< HEAD
@@ -75,14 +79,16 @@ const Register = () => {
       toast.success('Registro realizado com sucesso!');
 >>>>>>> c3c860630088ccbd9268c3ab6b58fe5dce863529
       navigate('/login');
+    }, 1500);
 
-    } catch (error: any) {
-      console.error('Erro de rede:', error);
-      // Captura mensagem do backend se houver
-      const msg = error.response?.data?.message || "O endereço de e-mail já existe ou erro no servidor.";
-      setError(msg);
-    }
-  };
+  } catch (error: any) {
+    console.error('Erro de rede:', error);
+    const msg = error.response?.data?.message || "O endereço de e-mail já existe ou erro no servidor.";
+    setError(msg);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
 <<<<<<< HEAD
@@ -234,91 +240,91 @@ const Register = () => {
           Voltar
         </button>
 
-        <div
-          className="p-10 rounded-lg shadow-lg w-full max-w-md"
-          style={{
-            backgroundColor: 'rgba(187, 170, 170, 0.205)',
-            backdropFilter: 'blur(15px)',
-          }}
-        >
-          <h2 className="text-3xl font-bold text-center mb-6 text-white">Registrar</h2>
+      <div
+        className="p-10 rounded-lg shadow-lg w-full max-w-md"
+        style={{
+          backgroundColor: 'rgba(187, 170, 170, 0.205)',
+          backdropFilter: 'blur(15px)',
+        }}
+      >
+        <h2 className="text-3xl font-bold text-center mb-6 text-white">Registrar</h2>
 
-          <form onSubmit={handleSubmit} autoComplete="off">
-            <div className="mb-4">
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Nome de usuário"
-                className="w-full py-3 px-4 rounded-xl bg-white bg-opacity-10 text-white border-transparent focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300 hover:border hover:border-white/30"
-                required
-              />
+        <form onSubmit={handleSubmit} autoComplete="off">
+          <div className="mb-4">
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Nome de usuário"
+              className="w-full py-3 px-4 rounded-xl bg-white bg-opacity-10 text-white border-transparent focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300 hover:border hover:border-white/30"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              className="w-full py-3 px-4 rounded-xl bg-white bg-opacity-10 text-white border-transparent focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300 hover:border hover:border-white/30"
+              autoComplete="off"
+              required
+            />
+          </div>
+
+          <div className="relative mb-4">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Senha"
+              className="w-full py-3 px-4 rounded-xl bg-white bg-opacity-10 text-white border-transparent focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300 hover:border hover:border-white/30"
+              autoComplete="new-password"
+              required
+            />
+            <div
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              <span className="text-white cursor-pointer">{showPassword ? <FaEyeSlash /> : <FaEye />}</span>
             </div>
+            
+          </div>
+          {password && <PasswordStrengthMeter password_value={password} />}
 
-            <div className="mb-4">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-                className="w-full py-3 px-4 rounded-xl bg-white bg-opacity-10 text-white border-transparent focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300 hover:border hover:border-white/30"
-                autoComplete="off"
-                required
-              />
+          <div className="relative mb-4">
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirmar Senha"
+              className={`w-full py-3 px-4 rounded-xl bg-white bg-opacity-10 text-white border-transparent focus:outline-none focus:ring-2 transition duration-300 hover:border hover:border-white/30 ${
+                confirmPassword && (password !== confirmPassword ? 'focus:ring-red-500' : 'focus:ring-green-500')
+              }`}
+              autoComplete="new-password"
+              required
+            />
+            <div
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              <span className="text-white cursor-pointer">{showConfirmPassword ? <FaEyeSlash /> : <FaEye />}</span>
             </div>
+            {confirmPassword && password !== confirmPassword && (
+              <p className="text-red-500 text-xs mt-1">As senhas não coincidem.</p>
+            )}
+          </div>
 
-            <div className="relative mb-4">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Senha"
-                className="w-full py-3 px-4 rounded-xl bg-white bg-opacity-10 text-white border-transparent focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300 hover:border hover:border-white/30"
-                autoComplete="new-password"
-                required
-              />
-              <div
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                <span className="text-white cursor-pointer">{showPassword ? <FaEyeSlash /> : <FaEye />}</span>
-              </div>
-              
-            </div>
-            {password && <PasswordStrengthMeter password_value={password} />}
+          <div className="mb-4 text-white text-sm">
+            <p className={passwordRequirements.length ? 'text-green-400' : ''}>✓ Pelo menos 8 caracteres</p>
+            <p className={passwordRequirements.uppercase ? 'text-green-400' : ''}>✓ Uma letra maiúscula</p>
+            <p className={passwordRequirements.lowercase ? 'text-green-400' : ''}>✓ Uma letra minúscula</p>
+            <p className={passwordRequirements.number ? 'text-green-400' : ''}>✓ Um número</p>
+            <p className={passwordRequirements.specialChar ? 'text-green-400' : ''}>✓ Um caractere especial</p>
+          </div>
 
-            <div className="relative mb-4">
-              <input
-                type={showConfirmPassword ? 'text' : 'password'}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirmar Senha"
-                className={`w-full py-3 px-4 rounded-xl bg-white bg-opacity-10 text-white border-transparent focus:outline-none focus:ring-2 transition duration-300 hover:border hover:border-white/30 ${
-                  confirmPassword && (password !== confirmPassword ? 'focus:ring-red-500' : 'focus:ring-green-500')
-                }`}
-                autoComplete="new-password"
-                required
-              />
-              <div
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
-                <span className="text-white cursor-pointer">{showConfirmPassword ? <FaEyeSlash /> : <FaEye />}</span>
-              </div>
-              {confirmPassword && password !== confirmPassword && (
-                <p className="text-red-500 text-xs mt-1">As senhas não coincidem.</p>
-              )}
-            </div>
-
-            <div className="mb-4 text-white text-sm">
-              <p className={passwordRequirements.length ? 'text-green-400' : ''}>✓ Pelo menos 8 caracteres</p>
-              <p className={passwordRequirements.uppercase ? 'text-green-400' : ''}>✓ Uma letra maiúscula</p>
-              <p className={passwordRequirements.lowercase ? 'text-green-400' : ''}>✓ Uma letra minúscula</p>
-              <p className={passwordRequirements.number ? 'text-green-400' : ''}>✓ Um número</p>
-              <p className={passwordRequirements.specialChar ? 'text-green-400' : ''}>✓ Um caractere especial</p>
-            </div>
-
-            {error && <p className="mb-4 text-center text-red-500">{error}</p>}
+          {error && <p className="mb-4 text-center text-red-500">{error}</p>}
 
             <button
               type="submit"
