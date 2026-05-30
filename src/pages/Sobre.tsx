@@ -1,7 +1,10 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import backgroundImage from '../assets/mainpage.jpg'; // Certifique-se de que o caminho esteja correto
+import poliImage from '../assets/images/poli1.jpg';
+import upeLogo from '../assets/images/logo-upe-site.png';
+import ufpbLogo from '../assets/images/Brasão_UFPB.png';
+import sadLogo from '../assets/images/logo.png';
 
 function Sobre() {
   return (
@@ -11,7 +14,6 @@ function Sobre() {
       {/* Seção Hero */}
       <section
         className="relative bg-cover bg-center h-96"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-white px-4">
@@ -40,7 +42,7 @@ function Sobre() {
           <div className="w-full lg:w-1/2 flex justify-center">
             <img
               className="max-h-96 rounded-xl shadow-lg"
-              src="https://s2.glbimg.com/smbJLb6Jt92GrMIDOFacclQ7K0o=/s.glbimg.com/jo/g1/f/original/2015/05/11/poli1.jpg"
+              src={poliImage}
               alt="Escola Politécnica de Pernambuco"
             />
           </div>
@@ -53,17 +55,17 @@ function Sobre() {
           <h2 className="text-4xl font-bold mb-12">Nossos Parceiros</h2>
           <div className="flex flex-wrap justify-center items-center gap-8">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Logo-upe-site.png"
+              src={upeLogo}
               alt="UPE"
               className="h-16"
             />
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/6/69/Bras%C3%A3o_UFPB.png"
+              src={ufpbLogo}
               alt="UFPB"
               className="h-16"
             />
             <img
-              src="https://www.sad.pe.gov.br/assets/logo.png"
+              src={sadLogo}
               alt="SAD PE"
               className="h-16"
             />

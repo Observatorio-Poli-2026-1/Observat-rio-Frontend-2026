@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { ArrowRightStartOnRectangleIcon, UserCircleIcon } from '@heroicons/react/20/solid';
+import logoUpe from '../assets/images/logo-upe-site.png';
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +23,7 @@ function Header() {
         <div className="flex items-center space-x-4">
           <NavLink to="/" className="flex items-center">
             <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Logo-upe-site.png" 
+              src={logoUpe} 
               alt="Logo" 
               className="h-10 w-15 object-contain"
             />
