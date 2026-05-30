@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import logoUpe from '../assets/images/logo-upe-site.png';
+import { ArrowRightStartOnRectangleIcon, UserCircleIcon } from '@heroicons/react/20/solid';
+import logoUpe from '../assets/logo-upe-60.png';
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);

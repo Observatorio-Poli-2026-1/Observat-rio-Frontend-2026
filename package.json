@@ -15,10 +15,6 @@
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
     "@tailwindcss/line-clamp": "^0.4.4",
-<<<<<<< HEAD
-=======
-    "@types/firebase": "^3.2.1",
->>>>>>> c3c860630088ccbd9268c3ab6b58fe5dce863529
     "@types/zxcvbn": "^4.4.5",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",

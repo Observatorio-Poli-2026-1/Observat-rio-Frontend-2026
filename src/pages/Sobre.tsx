@@ -1,10 +1,10 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import poliImage from '../assets/images/poli1.jpg';
-import upeLogo from '../assets/images/logo-upe-site.png';
-import ufpbLogo from '../assets/images/Brasão_UFPB.png';
-import sadLogo from '../assets/images/logo.png';
+import poliImage from '../assets/mainpage.jpg';
+import upeLogo from '../assets/logo-upe-60.png';
+import ufpbLogo from '../assets/parceiros/ufpb.png';
+import sadLogo from '../assets/parceiros/pe.png';
 
 function Sobre() {
   return (
