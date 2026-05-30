@@ -8,9 +8,8 @@ import LGPD from './assets/lgpd.png';
 import EDUCACAO from './assets/educacao.png';
 import SAUDE from './assets/saude.png';
 import GESTAO from './assets/gestao.png';
-import { useRef, useState } from "react";
+import { useRef, useState, type ChangeEvent, type FormEvent, type KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import emailjs from '@emailjs/browser';
 import backgroundImage from './assets/mainpage.jpg';
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,43 +20,69 @@ function App() {
   const [input, setInput] = useState("");
   const form = useRef<HTMLFormElement>(null);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setInput(event.target.value);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter') {
       handleNavigation(input);
     }
   };
 
   const handleNavigation = async (input: string) => {
+    const normalizedInput = input.trim().toLowerCase();
+
+    if (!normalizedInput) {
+      return;
+    }
+
     try {
-      // Requisição para obter os projetos
-      const response = await axios.get('/projetos/');
-      
-      const data = response.data; // Dados diretos
-  
-      // Busca o projeto pelo nome
-      const foundProject = data.projetos.find(
-        (project) => project.titulo?.toLowerCase() === input.toLowerCase()
+      const [projectsResponse, articlesResponse, productsResponse] = await Promise.all([
+        axios.get('/projetos/'),
+        axios.get('/artigos/'),
+        axios.get('/produtos/')
+      ]);
+
+      const projects = projectsResponse.data?.projetos || [];
+      const articles = articlesResponse.data?.artigos || [];
+      const products = productsResponse.data?.produtos || [];
+
+      const foundProject = projects.find(
+        (project: { titulo?: string; id?: string | number }) => project.titulo?.toLowerCase() === normalizedInput
       );
-  
+
       if (foundProject) {
-        // Redireciona para a página do projeto
         navigate(`/projetos/${foundProject.id}`);
+        return;
+      }
+
+      const foundArticle = articles.find(
+        (article: { titulo?: string }) => article.titulo?.toLowerCase() === normalizedInput
+      );
+
+      if (foundArticle) {
+        navigate(`/artigos?search=${encodeURIComponent(input)}`);
+        return;
+      }
+
+      const foundProduct = products.find(
+        (product: { titulo?: string }) => product.titulo?.toLowerCase() === normalizedInput
+      );
+
+      if (foundProduct) {
+        navigate(`/produtos?search=${encodeURIComponent(input)}`);
       } else {
-        // Redireciona para a página de Projects com o termo de busca
-        navigate(`/projetos?search=${encodeURIComponent(input)}`);
+        navigate(`/buscar?search=${encodeURIComponent(input)}`);
       }
     } catch (error) {
       console.error(error);
-      alert("Erro ao buscar projetos. Tente novamente mais tarde.");
+      alert("Erro ao buscar conteúdo. Tente novamente mais tarde.");
     }
   };
   
-  const handleButtonClick = (theme) => {
-    setInput(theme);
+  const handleButtonClick = (theme: { title: string; key_words: string }) => {
+    setInput(theme.title);
     navigate(`/projetos`,{state: {themes: theme}});
   };
 
@@ -66,7 +91,7 @@ function App() {
     emailjs.sendForm('service_7m2mxjm', 'template_p254d1l', form.current, 'A-3hcvqKw-tFCA2W3')
   };*/
 
-  const handleQuestionSubmit = (event) => {
+  const handleQuestionSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const QuestionForm = form.current
@@ -84,7 +109,7 @@ function App() {
     }
 
     axios.post('/duvidas_add/', NewQuestion) 
-    .then(response => {
+    .then(() => {
       toast.success("Mensagem enviada com sucesso!");
       QuestionForm?.reset();
     })

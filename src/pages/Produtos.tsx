@@ -1,30 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import axios from 'axios';
 import { ArrowDownTrayIcon } from '@heroicons/react/20/solid';
 import backgroundImage from '../assets/mainpage.jpg';
 import Loading from '../components/Loading';
+import { useSearchParams } from 'react-router-dom';
+
+type Produto = {
+  id?: string | number;
+  titulo?: string;
+  tipo?: string;
+  semestre?: string;
+  descricao?: string;
+  status?: string;
+  equipe?: string[];
+};
 
 function Produtos() {
-  const [input, setInput] = useState("");
-  const [produtos, setProdutos] = useState([]);
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
+  const [input, setInput] = useState(searchQuery);
+  const [produtos, setProdutos] = useState<Produto[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setInput(searchQuery);
     axios.get(`/produtos/`)
       .then((response) => {
         setProdutos(response.data.produtos || []);
       })
       .catch((error) => console.error('Erro ao carregar produtos:', error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [searchQuery]);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
 
-  const handleDownload = async (id) => {
+  const handleDownload = async (id: string | number | undefined) => {
+    if (id === undefined) {
+      return;
+    }
+
     try {
       const response = await axios.get(`/view_pdf_produto/${id}/`);
       const url = response.data.url;
@@ -43,7 +61,7 @@ function Produtos() {
     }
   };
 
-  const filteredProdutos = produtos.filter((produto) => {
+  const filteredProdutos = produtos.filter((produto: Produto) => {
     const searchInput = input.toLowerCase();
     return (
       produto.titulo?.toLowerCase().includes(searchInput) ||
@@ -105,11 +123,11 @@ function Produtos() {
             <Loading />
           ) : (
             <>
-              {filteredProdutos.filter(produto => produto.status === "Aprovado").length > 0 ? (
+              {filteredProdutos.filter((produto: Produto) => produto.status === "Aprovado").length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {filteredProdutos
-                    .filter(produto => produto.status === "Aprovado") // Filtra apenas os artigos aprovados
-                    .map((produto) => (
+                    .filter((produto: Produto) => produto.status === "Aprovado") // Filtra apenas os artigos aprovados
+                    .map((produto: Produto) => (
                       <div
                         key={produto.id}
                         className="bg-white rounded-xl shadow-lg p-6 flex flex-col"
@@ -118,7 +136,7 @@ function Produtos() {
                         <div className="mb-4">
                           <h3 className="font-semibold">Autor(es):</h3>
                           <ul className="list-disc list-inside">
-                            {produto.equipe?.map((autor, index) => (
+                            {produto.equipe?.map((autor: string, index: number) => (
                               <li key={index}>{autor}</li>
                             )) || <p>Autor não informado</p>}
                           </ul>

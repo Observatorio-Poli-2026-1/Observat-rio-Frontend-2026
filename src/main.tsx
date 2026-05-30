@@ -14,6 +14,7 @@ import ProdutosAdmin from './pages/Admin/Produtos.tsx'
 import GestaoAdmin from './pages/Admin/Gestao.tsx'
 import Articles from './pages/Artigos.tsx'
 import Produtos from './pages/Produtos.tsx';
+import SearchResults from './pages/SearchResults.tsx';
 import Sobre from './pages/Sobre.tsx'
 import FAQ from './pages/FAQ.tsx'
 import Login from './pages/Login.tsx'
@@ -83,6 +84,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path='/projetos/:slug' element={<Project />} />
           <Route path='/artigos' element={<Articles />} />
           <Route path='/produtos' element={<Produtos/>} />
+          <Route path='/buscar' element={<SearchResults />} />
           <Route path='/login' element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path='/esqueci-a-senha' element={<ForgotPassword />} />
