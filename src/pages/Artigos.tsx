@@ -1,30 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import axios from 'axios';
 import { ArrowDownTrayIcon } from '@heroicons/react/20/solid';
 import backgroundImage from '../assets/mainpage.jpg';
 import Loading from '../components/Loading';
+import { useSearchParams } from 'react-router-dom';
+
+type Article = {
+  id?: string | number;
+  titulo?: string;
+  tema?: string;
+  palavras_chave?: string[];
+  revisado?: string;
+  equipe?: string[];
+  data?: string;
+  resumo?: string;
+};
 
 function Articles() {
-  const [input, setInput] = useState("");
-  const [articles, setArticles] = useState([]);
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
+  const [input, setInput] = useState(searchQuery);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setInput(searchQuery);
     axios.get(`/artigos/`)
       .then((response) => {
         setArticles(response.data.artigos || []);
       })
       .catch((error) => console.error('Erro ao carregar artigos:', error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [searchQuery]);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
 
-  const handleDownload = async (id) => {
+  const handleDownload = async (id: string | number | undefined) => {
+    if (id === undefined) {
+      return;
+    }
+
     try {
       const response = await axios.get(`/view_pdf_artigo/${id}/`);
       const url = response.data.url;
@@ -43,12 +62,12 @@ function Articles() {
     }
   };
 
-  const filteredArticles = articles.filter((article) => {
+  const filteredArticles = articles.filter((article: Article) => {
     const searchInput = input.toLowerCase();
     return (
       article.titulo?.toLowerCase().includes(searchInput) ||
       article.tema?.toLowerCase().includes(searchInput) ||
-      (article.palavras_chave?.some((keyword) =>
+      (article.palavras_chave?.some((keyword: string) =>
         keyword.toLowerCase().includes(searchInput))
       )
     );
@@ -108,11 +127,11 @@ function Articles() {
             <Loading />
           ) : (
             <>
-              {filteredArticles.filter(article => article.revisado === "Aprovado").length > 0 ? (
+              {filteredArticles.filter((article: Article) => article.revisado === "Aprovado").length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {filteredArticles
-                    .filter(article => article.revisado === "Aprovado") // Filtra apenas os artigos aprovados
-                    .map((article) => (
+                    .filter((article: Article) => article.revisado === "Aprovado") // Filtra apenas os artigos aprovados
+                    .map((article: Article) => (
                       <div
                         key={article.id}
                         className="bg-white rounded-xl shadow-lg p-6 flex flex-col"
@@ -121,7 +140,7 @@ function Articles() {
                         <div className="mb-4">
                           <h3 className="font-semibold">Autor(es):</h3>
                           <ul className="list-disc list-inside">
-                            {article.equipe?.map((autor, index) => (
+                            {article.equipe?.map((autor: string, index: number) => (
                               <li key={index}>{autor}</li>
                             )) || <p>Autor não informado</p>}
                           </ul>
@@ -133,7 +152,7 @@ function Articles() {
                         <div className="mb-4">
                           <h3 className="font-semibold">Palavras-chave:</h3>
                           <div className="flex flex-wrap gap-2">
-                            {article.palavras_chave?.map((palavra, index) => (
+                            {article.palavras_chave?.map((palavra: string, index: number) => (
                               <span
                                 key={index}
                                 className="bg-blue-600 text-white px-2 py-1 rounded-full text-sm"
