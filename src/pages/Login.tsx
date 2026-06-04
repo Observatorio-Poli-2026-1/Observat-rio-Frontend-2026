@@ -2,35 +2,68 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../assets/backgroundlogin.jpg';
 import axios from 'axios';
+import { signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { auth } from '../utils/firebaseConfig';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showResend, setShowResend] = useState(false);
   const navigate = useNavigate();
+
+  const handleResendEmail = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await sendEmailVerification(userCredential.user);
+      toast.success('E-mail de verificação reenviado!');
+      setShowResend(false);
+    } catch (err: any) {
+      console.error('Erro ao reenviar e-mail:', err);
+      toast.error('Erro ao reenviar e-mail. Verifique suas credenciais.');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setShowResend(false);
+    setLoading(true);
+
     try {
-      // 1. Enviar a requisição para o login com email e senha na URL
+      // 1. Login no Firebase para verificar se o e-mail está validado (se configurado)
+      if (import.meta.env.VITE_FIREBASE_API_KEY) {
+        try {
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          if (!userCredential.user.emailVerified) {
+            setError('Seu e-mail ainda não foi verificado.');
+            setShowResend(true);
+            setLoading(false);
+            return;
+          }
+        } catch (firebaseError: any) {
+          console.error('Erro no Firebase Login:', firebaseError);
+        }
+      }
+
+      // 2. Enviar a requisição para o login no backend
       const response = await axios.post('/login/', { 
-    email: email, 
-    password: password 
-});
+        email: email, 
+        password: password 
+      });
   
-      // O Axios já devolve o JSON em response.data
       const data = response.data;
-      // Verificando se o token foi retornado
       if (!data.idToken) {
         throw new Error('Token não encontrado');
       }
   
-      // Armazenando o token no localStorage
       localStorage.setItem('authToken', data.idToken);
       localStorage.setItem('email', data.email);
       localStorage.setItem('userId', data.user_id);
-      const nomezinho = data.username;
-      localStorage.setItem('userName', nomezinho);
+      localStorage.setItem('userName', data.username);
       localStorage.setItem('isAdmin', data.is_admin);
   
       if (data.is_admin) {
@@ -42,6 +75,8 @@ const Login = () => {
     } catch (error) {
       console.error('Erro no login:', error);
       setError('Email ou senha inválidos');
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -55,6 +90,7 @@ const Login = () => {
         backgroundPosition: 'center',
       }}
     >
+      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
       <button
         onClick={() => navigate('/')}
         className="absolute top-4 left-4 bg-blue-500 text-white py-1 px-4 rounded shadow hover:bg-blue-700 transition duration-300 text-sm"
@@ -81,6 +117,7 @@ const Login = () => {
               placeholder="Email"
               className="w-full py-3 px-4 rounded-xl bg-white bg-opacity-10 text-white border-transparent focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300 hover:border hover:border-white/30"
               autoComplete="off"
+              required
             />
           </div>
 
@@ -93,17 +130,31 @@ const Login = () => {
               placeholder="Password"
               className="w-full py-3 px-4 rounded-xl bg-white bg-opacity-10 text-white border-transparent focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300 hover:border hover:border-white/30"
               autoComplete="new-password"
+              required
             />
           </div>
 
           <button
             type="submit"
-            className="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition duration-300"
+            disabled={loading}
+            className="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition duration-300 disabled:bg-gray-500"
           >
-            Log in
+            {loading ? 'Entrando...' : 'Log in'}
           </button>
 
           {error && <p className="mt-2 text-center text-red-600">{error}</p>}
+
+          {showResend && (
+            <div className="mt-2 text-center">
+              <button
+                type="button"
+                onClick={handleResendEmail}
+                className="text-blue-300 underline hover:text-blue-100 text-sm"
+              >
+                Reenviar e-mail de verificação
+              </button>
+            </div>
+          )}
 
           <div className="mt-4 text-center">
             <p className="text-white">
