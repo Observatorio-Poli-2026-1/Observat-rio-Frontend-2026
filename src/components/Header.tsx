@@ -18,15 +18,15 @@ function Header() {
   };
 
   return (
-    <header className="bg-primary-color text-light-color shadow-md">
+    <header className="bg-slate-100 text-primary-color shadow-sm border-b border-gray-200">
       <nav className="container mx-auto flex items-center justify-between py-4 ml-[10%]">
         {/* Logo */}
         <div className="flex items-center space-x-4">
-          <NavLink to="/" className="flex items-center">
+          <NavLink to="/" className="flex items-center text-primary-color">
             <img 
               src={logoUpe} 
               alt="Logo" 
-              className="h-10 w-15 object-contain"
+              className="h-20 w-auto object-contain"
             />
             <span className="ml-5 text-2xl font-semibold tracking-wide">
               Observatório de Projetos
@@ -38,7 +38,7 @@ function Header() {
         <div className="md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="text-light-color focus:outline-none"
+            className="text-primary-color focus:outline-none"
           >
             {isOpen ? (
               <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -59,8 +59,8 @@ function Header() {
               key={index}
               to={item === 'Início' ? '/' : `/${item.toLowerCase()}`}
               className={({ isActive }) =>
-                "text-lg font-medium hover:text-gray-300 transition duration-200 " +
-                (isActive ? "underline" : "")
+                "text-lg font-medium hover:text-blue-600 transition duration-200 " +
+                (isActive ? "text-blue-700 underline underline-offset-4" : "text-primary-color")
               }
             >
               {item}
@@ -75,16 +75,16 @@ function Header() {
                {/* ALTERAÇÃO AQUI: Transformado em NavLink para redirecionar */}
                <NavLink 
                  to="/user-projects"
-                 className="flex items-center text-white font-medium hover:text-gray-300 transition duration-200"
+                 className="flex items-center text-primary-color font-medium hover:text-blue-600 transition duration-200"
                  title="Ir para o Painel do Usuário"
                >
-                  <UserCircleIcon className="h-6 w-6 mr-2" />
+                  <UserCircleIcon className="h-6 w-6 mr-2 text-primary-color" />
                   Olá, {userName}
                </NavLink>
                
                <button 
                  onClick={handleLogout}
-                 className="flex items-center px-4 py-2 bg-red-600 text-white rounded-full shadow-lg hover:bg-red-700 transition duration-200 text-sm"
+                 className="flex items-center px-4 py-2 bg-red-600 text-white rounded-full shadow hover:bg-red-700 transition duration-200 text-sm"
                >
                  <ArrowRightStartOnRectangleIcon className="h-4 w-4 mr-1" />
                  Sair
@@ -93,7 +93,7 @@ function Header() {
           ) : (
             <NavLink
               to="/login"
-              className="flex items-center px-4 py-2 bg-gray-100 text-primary-color rounded-full shadow-lg hover:bg-gray-400 transition duration-200"
+              className="flex items-center px-4 py-2 bg-primary-color text-white rounded-full shadow hover:bg-blue-800 transition duration-200"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A5.982 5.982 0 0112 15c1.657 0 3.156.672 4.242 1.758M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -106,15 +106,15 @@ function Header() {
 
       {/* Mobile Menu com Lógica de Login */}
       {isOpen && (
-        <div className="md:hidden bg-primary-color">
+        <div className="md:hidden bg-slate-100 border-t border-gray-200">
           <ul className="space-y-4 px-6 py-4">
             {['Início', 'Projetos', 'Artigos','Produtos', 'Sobre', 'FAQ'].map((item, index) => (
               <li key={index}>
                 <NavLink
                   to={`/${item.toLowerCase()}`}
                   className={({ isActive }) =>
-                    "block text-lg font-medium text-light-color hover:text-gray-300 transition duration-200 " +
-                    (isActive ? "underline" : "")
+                    "block text-lg font-medium hover:text-blue-600 transition duration-200 " +
+                    (isActive ? "text-blue-700 underline" : "text-primary-color")
                   }
                   onClick={() => setIsOpen(false)}
                 >
@@ -128,7 +128,7 @@ function Header() {
                   {/* Link do Usuário no Mobile */}
                   <NavLink
                     to="/user-projects"
-                    className="block w-full text-left text-lg font-medium text-white hover:text-gray-300 transition duration-200 mb-2"
+                    className="block w-full text-left text-lg font-medium text-primary-color hover:text-blue-600 transition duration-200 mb-2"
                     onClick={() => setIsOpen(false)}
                   >
                     <div className="flex items-center">
@@ -142,7 +142,7 @@ function Header() {
                       handleLogout();
                       setIsOpen(false);
                     }}
-                    className="block w-full text-left text-lg font-medium text-red-300 hover:text-red-100 transition duration-200"
+                    className="block w-full text-left text-lg font-medium text-red-600 hover:text-red-800 transition duration-200"
                   >
                     Sair
                   </button>
@@ -150,7 +150,7 @@ function Header() {
               ) : (
                 <NavLink
                   to="/login"
-                  className="block text-lg font-medium text-light-color hover:text-gray-300 transition duration-200 flex items-center"
+                  className="block text-lg font-medium text-primary-color hover:text-blue-600 transition duration-200 flex items-center"
                   onClick={() => setIsOpen(false)}
                 >
                   Entrar
