@@ -4,6 +4,8 @@ import backgroundImage from '../assets/backgroundlogin.jpg';
 import PasswordStrengthMeter from '../components/PasswordStrengthMeter';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -60,16 +62,19 @@ const Register = () => {
     try {
       setLoading(true);
 
-      await axios.post('/register/', {
+      // 1. Registro no backend (que agora também envia o e-mail)
+      const response = await axios.post('/register/', {
         username,
         email,
         password,
         is_admin: false,
       });
 
-      // Se chegou aqui, deu certo (2xx)
-      alert('Registro realizado com sucesso!');
-      navigate('/login');
+      toast.success(response.data.msg || 'Registro realizado! Verifique seu e-mail.');
+
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
     } catch (error: any) {
       console.error('Erro de rede:', error);
       const msg = error.response?.data?.message || "O endereço de e-mail já existe ou erro no servidor.";
@@ -88,6 +93,7 @@ const Register = () => {
         backgroundPosition: 'center',
       }}
     >
+      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
       <button
         onClick={() => navigate('/')}
         className="absolute top-4 left-4 bg-blue-500 text-white py-1 px-4 rounded shadow hover:bg-blue-700 transition duration-300 text-sm"
