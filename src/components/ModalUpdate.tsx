@@ -9,6 +9,8 @@ import { PencilSquareIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 import { ProjectInt } from "../pages/Projects";
 import { useEffect, useState } from "react";
+import { useAuth } from '../contexts/AuthContext';
+import Loading from './Loading';
 import ModalCadastrarIntegrante from "../components/ModalCadastrarIntegrante";
 import { Navigate } from "react-router-dom";
 import { FaFileUpload } from "react-icons/fa";
@@ -67,9 +69,9 @@ export default function ModalUpdate({ project, handleFotosUpload }/*: { project:
     }
   }, []);
 
-  const userIsAdmin = localStorage.getItem("isAdmin") === "true";
-
-  if (!userIsAdmin) {
+  const { user, loading: authLoading } = useAuth();
+  if (authLoading) return <Loading />;
+  if (!user?.is_admin) {
     return <Navigate to="/user-projects" />;
   }
 

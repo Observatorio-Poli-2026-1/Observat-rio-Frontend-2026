@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { CalendarIcon, Cog8ToothIcon, FolderIcon, UserGroupIcon, UserIcon, HeartIcon, TrashIcon } from '@heroicons/react/20/solid';
 import axios from 'axios';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import Footer from '../components/Footer';
 import iconImage from '../assets/avatar.png';
 import Header from '../components/Header';
@@ -29,7 +30,8 @@ function Project() {
   const token = localStorage.getItem('authToken');
   const userName = localStorage.getItem('userName');
   const userEmail = localStorage.getItem('email');
-  const isAdmin = localStorage.getItem('isAdmin') === 'true';
+  const { user } = useAuth();
+  const isAdmin = !!user?.is_admin;
 
   // Função para extrair ID do YouTube com segurança
   const getYouTubeID = (url: string) => {

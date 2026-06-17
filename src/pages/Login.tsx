@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth
 import { auth } from '../utils/firebaseConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '../contexts/AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,6 +15,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showResend, setShowResend] = useState(false);
   const navigate = useNavigate();
+  const { refreshUser } = useAuth();
 
   const handleResendEmail = async () => {
     try {
@@ -64,11 +66,17 @@ const Login = () => {
       localStorage.setItem('email', data.email);
       localStorage.setItem('userId', data.user_id);
       localStorage.setItem('userName', data.username);
-      localStorage.setItem('isAdmin', data.is_admin);
-  
-      if (data.is_admin) {
-        navigate('/admin-projects');
-      } else {
+      // refresh profile in AuthContext and navigate according to server-authorized role
+      try {
+        await refreshUser();
+        const profile = await axios.get('/me/');
+        if (profile.data && profile.data.is_admin) {
+          navigate('/admin-projects');
+        } else {
+          navigate('/user-projects');
+        }
+      } catch (err) {
+        // fallback
         navigate('/user-projects');
       }
   

@@ -7,6 +7,7 @@ import ModalUpdateArticle from "../../components/ModalUpdateArticle";
 import { FaFileUpload } from "react-icons/fa";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
+import { useAuth } from '../../contexts/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ModalComment from "../../components/ModalComment";
@@ -52,8 +53,9 @@ function ArticlesAdmin () {
     resumo: '',
   })
 
-  const userIsAdmin = localStorage.getItem('isAdmin') === 'true';
-  if (!userIsAdmin) {
+  const { user, loading: authLoading } = useAuth();
+  if (authLoading) return <Loading />;
+  if (!user?.is_admin) {
     return <Navigate to="/user-articles" />;
   }
 

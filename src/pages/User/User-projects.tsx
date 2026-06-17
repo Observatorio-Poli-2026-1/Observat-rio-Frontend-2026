@@ -14,6 +14,7 @@ import ModalComment from "../../components/ModalComment";
 import ModalLikes from "../../components/ModalLikes";
 import { FaFileUpload } from "react-icons/fa";
 import { Navigate } from "react-router-dom";
+import { useAuth } from '../../contexts/AuthContext';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ModalCadastrarIntegrante from "../../components/ModalCadastrarIntegrante";
@@ -60,9 +61,9 @@ function Userprojects() {
   const [equipeTemp, setEquipeTemp] = useState<string[]>([]);
   const [editIntegrante,setEditIntegrante] = useState(null);
 
-  const userIsAdmin = localStorage.getItem("isAdmin") === "true"; 
-
-  if (userIsAdmin) {
+  const { user, loading: authLoading } = useAuth();
+  if (authLoading) return <Loading />;
+  if (user?.is_admin) {
     return <Navigate to="/admin-projects" />;
   }
 

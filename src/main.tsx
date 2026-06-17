@@ -4,6 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
 import axios from 'axios';
+import { AuthProvider } from './contexts/AuthContext';
 
 // Páginas
 import Projects from './pages/Projects'
@@ -76,7 +77,8 @@ axios.interceptors.response.use(
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
         <Routes>
           {/* Rotas Públicas */}
           <Route path='/' element={<App />} />
@@ -103,6 +105,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path='/admin-gestao' element={<GestaoAdmin/>} />
           <Route path='/user-profile' element={<Profile />} />
         </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>,
 )

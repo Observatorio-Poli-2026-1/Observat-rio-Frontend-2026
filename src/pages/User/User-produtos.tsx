@@ -7,6 +7,8 @@ import ModalUpdateProduto from "../../components/ModalUpdateProduto";
 import { FaFileUpload } from "react-icons/fa";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
+import { useAuth } from '../../contexts/AuthContext';
+import Loading from "../../components/Loading";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -51,9 +53,9 @@ function Userprodutos () {
     status: "",
   })
 
-  const userIsAdmin = localStorage.getItem('isAdmin') === 'true';
-  if (userIsAdmin) {
-    // Se não for admin, redireciona para a página de usuário
+  const { user, loading: authLoading } = useAuth();
+  if (authLoading) return <Loading />;
+  if (user?.is_admin) {
     return <Navigate to="/admin-produtos" />;
   }
 
