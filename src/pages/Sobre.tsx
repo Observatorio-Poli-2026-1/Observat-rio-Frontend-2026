@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import poliImage from '../assets/mainpage.jpg';
+import poli1 from '../assets/poli1.png';
 import upeLogo from '../assets/logo-upe-60.png';
 import ufpbLogo from '../assets/parceiros/ufpb.png';
 import sadLogo from '../assets/parceiros/pe.png';
@@ -42,7 +42,7 @@ function Sobre() {
           <div className="w-full lg:w-1/2 flex justify-center">
             <img
               className="max-h-96 rounded-xl shadow-lg"
-              src={poliImage}
+              src={poli1}
               alt="Escola Politécnica de Pernambuco"
             />
           </div>
