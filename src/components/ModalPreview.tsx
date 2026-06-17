@@ -16,16 +16,18 @@ export default function ModalPreview({ isOpen, onClose, title, data, type }: Mod
   const handleDownload = async () => {
     const endpoint = type === 'artigo' ? 'view_pdf_artigo' : 'view_pdf_produto';
     try {
+      // Garantindo que a URL tenha a barra correta
       const response = await axios.get(`/${endpoint}/${data.id}/`);
       const url = response.data.url;
       if (url) {
         window.open(url, '_blank');
       } else {
+        console.error('URL não encontrada na resposta:', response.data);
         alert('URL do arquivo não encontrada.');
       }
     } catch (error) {
       console.error('Erro ao obter o arquivo:', error);
-      alert('Erro ao abrir o arquivo.');
+      alert('Erro ao abrir o arquivo. Verifique se o PDF foi enviado corretamente.');
     }
   };
 
