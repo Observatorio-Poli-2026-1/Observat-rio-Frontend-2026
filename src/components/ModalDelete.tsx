@@ -22,9 +22,9 @@ function handleOptionDelete(id: string | undefined, setOpen: { (value: SetStateA
   }
 
   // Fazendo a requisição de deletar projeto com o token no cabeçalho de autorização
-  axios.delete(`/projetos/${id}/`, {
+  axios.delete(`/projetos/${id}/?id_token=${token}`, {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        'Authorization': `Bearer ${token}`
       }
     })
     .then(() => {
