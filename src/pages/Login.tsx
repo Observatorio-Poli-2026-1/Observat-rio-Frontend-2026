@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../assets/backgroundlogin.jpg';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth
 import { auth } from '../utils/firebaseConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { canAttemptAction, formatCooldown, getCooldownRemaining, isHoneypotFilled, registerAttempt } from '../utils/antiAutomation';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,7 +14,16 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showResend, setShowResend] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
+  const [now, setNow] = useState(Date.now());
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const cooldownRemaining = getCooldownRemaining('login', 30_000, now);
 
   const handleResendEmail = async () => {
     try {
@@ -31,6 +41,18 @@ const Login = () => {
     e.preventDefault();
     setError('');
     setShowResend(false);
+
+    if (isHoneypotFilled(honeypot)) {
+      setError('Comportamento automatizado detectado.');
+      return;
+    }
+
+    if (!canAttemptAction('login', 30_000)) {
+      setError(`Muitas tentativas. Aguarde ${formatCooldown(cooldownRemaining)}.`);
+      return;
+    }
+
+    registerAttempt('login');
     setLoading(true);
 
     try {
@@ -134,13 +156,30 @@ const Login = () => {
             />
           </div>
 
+          <input
+            type="text"
+            name="company"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="hidden"
+          />
+
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || cooldownRemaining > 0}
             className="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition duration-300 disabled:bg-gray-500"
           >
-            {loading ? 'Entrando...' : 'Log in'}
+            {loading ? 'Entrando...' : cooldownRemaining > 0 ? `Aguarde ${formatCooldown(cooldownRemaining)}` : 'Log in'}
           </button>
+
+          {cooldownRemaining > 0 && (
+            <p className="mt-2 text-center text-yellow-200 text-sm">
+              Aguarde {formatCooldown(cooldownRemaining)} antes de tentar novamente.
+            </p>
+          )}
 
           {error && <p className="mt-2 text-center text-red-600">{error}</p>}
 
