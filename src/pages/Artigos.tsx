@@ -41,6 +41,7 @@ function Articles() {
 
   const handleDownload = async (id: string | number | undefined) => {
     if (id === undefined) {
+      alert('ID do artigo não encontrado.');
       return;
     }
 
@@ -56,9 +57,11 @@ function Articles() {
         document.body.removeChild(link);
       } else {
         console.error('URL não encontrada');
+        alert('O arquivo PDF não foi encontrado para este artigo.');
       }
     } catch (error) {
       console.error('Erro ao obter o PDF:', error);
+      alert('Houve um erro ao tentar visualizar o arquivo. Por favor, tente novamente mais tarde.');
     }
   };
 
@@ -163,7 +166,7 @@ function Articles() {
                           </div>
                         </div>
                         <div className="mb-4">
-                          <h3 className="font-semibold">Data de publicação:</h3>
+                          <h3 className="font-semibold">Data de publication:</h3>
                           <p>{article.data || "Data não disponível"}</p>
                         </div>
                         <div className="mb-4">

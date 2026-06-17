@@ -40,6 +40,7 @@ function Produtos() {
 
   const handleDownload = async (id: string | number | undefined) => {
     if (id === undefined) {
+      alert('ID do produto não encontrado.');
       return;
     }
 
@@ -55,9 +56,11 @@ function Produtos() {
         document.body.removeChild(link);
       } else {
         console.error('URL não encontrada');
+        alert('O arquivo PDF não foi encontrado para este produto.');
       }
     } catch (error) {
       console.error('Erro ao obter o PDF:', error);
+      alert('Houve um erro ao tentar visualizar o arquivo. Por favor, tente novamente mais tarde.');
     }
   };
 
@@ -147,12 +150,13 @@ function Produtos() {
                         </div>
                         <div className="mb-4">
                           <h3 className="font-semibold">Semestre:</h3>
-                          <p>{produto.semestre || "Semesstre não disponível"}</p>
+                          <p>{produto.semestre || "Semestre não disponível"}</p>
                         </div>
                         <div className="mb-4">
                           <h3 className="font-semibold">Descrição:</h3>
-                          <p>{produto.descricao || "Semesstre não disponível"}</p>
+                          <p>{produto.descricao || "Descrição não disponível"}</p>
                         </div>
+
                         <button
                           className="mt-auto flex items-center text-blue-600 hover:text-blue-800 font-semibold"
                           onClick={() => handleDownload(produto.id)}

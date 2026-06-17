@@ -10,15 +10,21 @@ import SAUDE from './assets/saude.png';
 import GESTAO from './assets/gestao.png';
 import { useRef, useState, type ChangeEvent, type FormEvent, type KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import backgroundImage from './assets/mainpage.jpg';
+import poli1 from './assets/poli1.png';
+import polinoite from './assets/polinoite.png';
+import blocoB from './assets/blocoB.png';
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 function App() {
   const navigate = useNavigate();
   const [input, setInput] = useState("");
   const form = useRef<HTMLFormElement>(null);
+
+  const heroImages = [blocoB, poli1, polinoite];
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setInput(event.target.value);
@@ -134,12 +140,37 @@ function App() {
         theme="colored"
     />
 
-      {/* Seção Hero */}
-      <section className="relative bg-cover bg-center h-screen" style={{ backgroundImage: `url(${backgroundImage})` }}>
-        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+      {/* Seção Hero com Carrossel */}
+      <section className="relative h-screen overflow-hidden">
+        {/* Carrossel de Fundo */}
+        <div className="absolute inset-0 z-0">
+          <Carousel
+            showArrows={false}
+            showStatus={false}
+            showThumbs={false}
+            infiniteLoop={true}
+            autoPlay={true}
+            interval={5000}
+            transitionTime={1000}
+            stopOnHover={false}
+            className="h-full w-full"
+          >
+            {heroImages.map((image, index) => (
+              <div key={index} className="h-screen w-full">
+                <img 
+                  src={image} 
+                  alt={`Background ${index}`} 
+                  className="h-full w-full object-cover blur-md brightness-50"
+                />
+              </div>
+            ))}
+          </Carousel>
+        </div>
+
+        {/* Overlay e Conteúdo */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-white px-4">
-          <h1 className="text-5xl font-bold mb-6 text-center">Observatório de Projetos - POLI/UPE</h1>
-          <p className="text-2xl mb-8 text-center">Descubra projetos inovadores e inspiradores</p>
+          <h1 className="text-5xl font-bold mb-6 text-center drop-shadow-2xl">Observatório de Projetos - POLI/UPE</h1>
+          <p className="text-2xl mb-8 text-center drop-shadow-xl">Descubra projetos inovadores e inspiradores</p>
           <div className="flex w-full max-w-lg">
             <input
               type="search"
@@ -153,7 +184,7 @@ function App() {
             />
             <button
               onClick={() => handleNavigation(input)}
-              className="bg-blue-600 h-16 px-6 rounded-r-full hover:bg-blue-700 transition-colors"
+              className="bg-blue-600 h-16 px-6 rounded-r-full hover:bg-blue-700 transition-colors shadow-lg"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1111 5a6 6 0 016 6z" />
