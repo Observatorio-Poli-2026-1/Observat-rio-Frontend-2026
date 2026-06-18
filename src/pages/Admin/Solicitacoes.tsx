@@ -36,6 +36,26 @@ function SolicitacoesAdmin() {
     fetchSolicitacoes();
   }, []);
 
+  const handleDelete = async (id: string) => {
+    if (!window.confirm('Tem certeza que deseja excluir esta solicitação?')) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('authToken');
+      await axios.delete(`/solicitacoes_empresa/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success('Solicitação excluída com sucesso');
+      setSolicitacoes((prev) => prev.filter((sol: any) => sol.id !== id));
+    } catch (error) {
+      console.error('Erro ao excluir solicitação:', error);
+      toast.error('Erro ao excluir solicitação');
+    }
+  };
+
   return (
     <>
       <HeaderAdmin />
@@ -64,6 +84,7 @@ function SolicitacoesAdmin() {
                   <th className="border border-gray-300 px-4 py-2 text-left">Descrição do Problema</th>
                   <th className="border border-gray-300 px-4 py-2 text-left">Expectativa</th>
                   <th className="border border-gray-300 px-4 py-2 text-left">Prazo</th>
+                  <th className="border border-gray-300 px-4 py-2 text-center">Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -79,6 +100,14 @@ function SolicitacoesAdmin() {
                       {sol.expectativa || '-'}
                     </td>
                     <td className="border border-gray-300 px-4 py-2">{sol.prazo || '-'}</td>
+                    <td className="border border-gray-300 px-4 py-2 text-center">
+                      <button
+                        onClick={() => handleDelete(sol.id)}
+                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition-colors text-sm font-semibold"
+                      >
+                        Excluir
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
