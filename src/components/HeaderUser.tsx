@@ -22,6 +22,8 @@ function HeaderUser() {
           <Nav.Link href="/user-projects" className="text-primary-color hover:text-blue-600 font-medium">Projetos</Nav.Link>
           <Nav.Link href="/user-articles" className="text-primary-color hover:text-blue-600 font-medium">Artigos</Nav.Link>
           <Nav.Link href="/user-produtos" className="text-primary-color hover:text-blue-600 font-medium">Produtos</Nav.Link>
+          <Nav.Link href="/solicitacoes" className="text-primary-color hover:text-blue-600 font-medium">Solicitações</Nav.Link>
+          <Nav.Link href="/empresa-solicitacoes" className="text-primary-color hover:text-blue-600 font-medium">Enviar desafio</Nav.Link>
         </div>
       </Nav>
 

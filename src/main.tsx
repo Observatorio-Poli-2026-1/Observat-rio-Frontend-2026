@@ -21,6 +21,9 @@ import Login from './pages/Login.tsx'
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword.tsx';
 import Profile from './pages/User/Profile.tsx';
+import SolicitacoesAdmin from './pages/Admin/Solicitacoes.tsx'
+import Solicitacoes from './pages/Solicitacoes.tsx';
+import EmpresaSolicitacao from './pages/EmpresaSolicitacao.tsx';
 
 // Páginas do Usuário
 import Userprojects from './pages/User/User-projects.tsx';
@@ -84,6 +87,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path='/projetos/:slug' element={<Project />} />
           <Route path='/artigos' element={<Articles />} />
           <Route path='/produtos' element={<Produtos/>} />
+          <Route path='/solicitacoes' element={<Solicitacoes />} />
           <Route path='/buscar' element={<SearchResults />} />
           <Route path='/login' element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -95,12 +99,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path='/user-projects' element={<Userprojects />} />
           <Route path='/user-articles' element={<Userarticles />} />
           <Route path='/user-produtos' element={<Userprodutos />} />
+          <Route path='/empresa-solicitacoes' element={<EmpresaSolicitacao />} />
 
           {/* Rotas de Admin */}
           <Route path='/admin-projects' element={<ProjectsAdmin />} />
           <Route path='/admin-articles' element={<ArticlesAdmin />} />
           <Route path='/admin-produtos' element={<ProdutosAdmin/>} />
           <Route path='/admin-gestao' element={<GestaoAdmin/>} />
+          <Route path='/admin-solicitacoes' element={<SolicitacoesAdmin />} />
           <Route path='/user-profile' element={<Profile />} />
         </Routes>
     </BrowserRouter>

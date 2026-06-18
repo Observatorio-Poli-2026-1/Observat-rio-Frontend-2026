@@ -23,6 +23,7 @@ function HeaderAdmin() {
           <Nav.Link href="/admin-projects" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Projetos</Nav.Link>
           <Nav.Link href="/admin-articles" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Artigos</Nav.Link>
           <Nav.Link href="/admin-produtos" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Produtos</Nav.Link>
+          <Nav.Link href="/admin-solicitacoes" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Solicitações</Nav.Link>
           <Nav.Link href="/admin-gestao" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap" title="Gestão de Dúvidas e Sugestões">
             Gestão de Dúvidas
           </Nav.Link>
