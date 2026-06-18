@@ -1,0 +1,490 @@
+import { Table } from "react-bootstrap";
+import HeaderAdmin from "../../components/HeaderAdmin";
+import { SetStateAction, useEffect, useState } from "react";
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
+import ModalDeleteArticle from "../../components/ModalDeleteArticle";
+import ModalUpdateArticle from "../../components/ModalUpdateArticle";
+import { FaFileUpload } from "react-icons/fa";
+import axios from "axios";
+import { Navigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ModalComment from "../../components/ModalComment";
+import Loading from "../../components/Loading";
+import { EyeIcon } from "@heroicons/react/20/solid";
+import ModalPreview from "../../components/ModalPreview";
+
+const columns = [
+  { key: "titulo", label: "Titulo" },
+  { key: "preview", label: "Visualizar" },
+  { key: "editar", label: "Editar" },
+  { key: "excluir", label: "Excluir" },
+  { key: "revisar", label: "Status" },
+  { key: "botao", label: "" },
+  { key: "botao2", label: "" },
+];
+
+function ArticlesAdmin () {
+
+  const [Input, setInput] = useState<string>("");
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(event.target.value);
+  };
+
+  const [Article, setArticle] = useState([]);
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(true);
+  
+  // Estados para o Preview
+  const [previewData, setPreviewData] = useState(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  const [NewArticle, setNewArticle] = useState({
+    titulo: '',
+    descricao: '',
+    equipe: [] as string[],
+    tema: '',
+    data: '',
+    palavras_chave: [] as string[],
+    id: '',
+    arquivo: '#',
+    revisado: "",
+    resumo: '',
+  })
+
+  const userIsAdmin = localStorage.getItem('isAdmin') === 'true';
+  if (!userIsAdmin) {
+    return <Navigate to="/user-articles" />;
+  }
+
+  const [file, setFile] = useState<File | undefined>();
+  async function uploadPdf(e: React.FormEvent<HTMLInputElement>) {
+    const target = e.target as HTMLInputElement & {
+      files: FileList;
+    };
+    setFile(target.files[0]);
+  }
+
+  const [changedTitle, setChangedTitle] = useState(true);
+
+  const getStatusBadge = (status: string) => {
+    let styles = "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ";
+    
+    switch (status) {
+      case "Aprovado":
+        styles += "bg-green-50 text-green-700 ring-green-600/20";
+        break;
+      case "Reprovado":
+        styles += "bg-red-50 text-red-700 ring-red-600/20";
+        break;
+      case "Pendente":
+      default:
+        styles += "bg-yellow-50 text-yellow-800 ring-yellow-600/20";
+        break;
+    }
+
+    return (
+      <span className={styles}>
+        {status || "Pendente"}
+      </span>
+    );
+  };
+
+  const handleApprove = (artigo) => {
+    const token = localStorage.getItem('authToken');
+    axios.put(`/artigo_revisado/${artigo.id}/?novo_revisado=Aprovado&id_token=${token}`, null,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {        window.location.reload();
+      })
+        .catch(error => console.error('Erro ao aprovar projeto:', error));
+  }
+
+  const handleReprove = (artigo) => {
+    const token = localStorage.getItem('authToken');
+    axios.put(`/artigo_revisado/${artigo.id}/?novo_revisado=Reprovado&id_token=${token}`, null,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        window.location.reload();
+      })
+        .catch(error => console.error('Erro ao reprovar projeto:', error));
+  }
+
+  const handlePdfUpload = (id: string) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    axios.post(`/upload_pdf_artigo/${id}/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+    })
+    .then(response => {
+      window.location.reload();
+      setOpen(false);
+    })
+    .catch(error => console.log('Erro ao fazer upload do PDF:', error))
+  }
+
+  const handlePost = () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      alert('Erro ao fazer login.');
+      return;
+    }
+    
+    const stringToArray = (value) => {
+      return typeof value === 'string' && value.trim() 
+        ? value.split(',').map(item => item.trim()) 
+        : [];
+    };
+
+    const equipeArray = stringToArray(NewArticle.equipe);
+    const palavrasChaveArray = stringToArray(NewArticle.palavras_chave);
+
+    const NewArticleWithDefaults = {
+      id: NewArticle.id || "default-id",
+      titulo: NewArticle.titulo || "Título não informado",
+      tema: NewArticle.tema || "Tema não informado",
+      palavras_chave: palavrasChaveArray,
+      descricao: NewArticle.descricao || "Sem descrição",
+      equipe: equipeArray,
+      data: NewArticle.data || "",
+      arquivo: NewArticle.arquivo || '#',
+      revisado: NewArticle.revisado || "Pendente",
+      resumo: NewArticle.resumo || "Resumo ausente",
+    };
+
+    axios.post(`/artigos_add/?id_token=${token}`, NewArticleWithDefaults, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(response => {
+      handlePdfUpload(response.data.artigo.id);
+      toast.success("Artigo cadastrado com sucesso!");
+    })
+    .catch(error => {
+      setChangedTitle(false)
+      toast.error(`Erro ao adicionar artigo: ${error.response.data.detail}`)});
+  };
+
+  const handleUpdate = () => {
+    axios.get(`/artigos/`).then(response => {
+      setArticle(response.data.artigos || []);
+    }).catch(error => {
+      console.error('Erro ao atualizar artigo', error);
+    });
+  }; 
+  
+  useEffect(() => {
+    setLoading(true);
+    axios.get(`/artigos/`)
+    .then(function (response) {
+      setArticle(response.data.artigos || []);
+    })
+    .finally(() => setLoading(false));
+  }, []);
+
+  const filteredArticle = Array.isArray(Article) ? Article.filter((article) => {   
+    const input = Input.toLowerCase();
+    return (
+      article.titulo?.toLowerCase().includes(input) ||
+      article.palavras_chave?.some(p => p.toLowerCase().includes(input)) ||
+      article.tema?.toLowerCase().includes(input)
+    );
+  }) : [];
+
+  const semesterGenerator = (): string[] => {
+    const current = new Date();
+    const currentYear = current.getFullYear();
+    const currentMonth = current.getMonth();
+    const semesters: string[] = [];
+    for (let year = 2023; year <= currentYear; year++) {
+      semesters.push(`${year}.1`);
+      if (year < currentYear || currentMonth >= 6) {
+        semesters.push(`${year}.2`);
+      }
+    }
+    return semesters.reverse();
+  };
+
+  return (
+    <>
+      <HeaderAdmin />
+      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
+      <div className="flex flex-col px-[13vw] pt-10 gap-6">
+        <section className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-start text-dark-color">Artigos</h1>
+          <button
+            type="submit"
+            onClick={() => setOpen(true)}
+            className="rounded-md bg-primary-color h-full w-[15vw] text-white"
+          >
+            Novo artigo
+          </button>
+        </section>
+        <input
+          type="search"
+          name="searchbar"
+          id="searchbar"
+          className="rounded-full w-full h-[5vh] border border-light-color indent-2 bg-[#D8DBE2]"
+          placeholder="Pesquise por título, área de pesquisa, palavra-chave"
+          value={Input}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className="px-[13vw] pt-10">
+        {loading ? (
+          <Loading />
+        ) : (
+          <Table className="h-auto w-full table-fixed">
+            <thead>
+              <tr>
+              {columns.map((column) => (
+                <th
+                  key={column.key}
+                  className={`${column.key === "titulo" ? "text-left w-1/3" : "text-center w-auto"}`}
+                >
+                  {column.label}
+                </th>
+              ))}
+              </tr>
+            </thead>
+            <tbody>
+              {filteredArticle.map((article) => (
+                <tr key={article.id} className="border border-light-color">
+                  {columns.map((column) => (
+                    <td
+                      key={column.key}
+                      className={`items-center py-3 ${column.key === "titulo" ? "text-left pl-3" : "text-center pr-3"}`}
+                    >
+                      {column.key === "preview" ? (
+                        <button
+                          className="text-dark-color hover:text-blue-600 transition-colors"
+                          onClick={() => {
+                            setPreviewData(article);
+                            setIsPreviewOpen(true);
+                          }}
+                          title="Visualizar Detalhes"
+                        >
+                          <EyeIcon className="h-5 w-5" />
+                        </button>
+                      ) : column.key === "editar" ? (
+                        <ModalUpdateArticle article={article} />
+                      ) : column.key === "excluir" ? (
+                        <ModalDeleteArticle
+                          title={article.titulo}
+                          id={article.id}
+                          handleUpdate={handleUpdate}
+                        />
+                      ) : column.key === "comentar" ? (
+                        <ModalComment projectId={article.id} />
+                      ) : column.key === "revisar" ? (
+                        getStatusBadge(article.revisado)
+                      ) : column.key === "botao" && (article.revisado === "Pendente" || article.revisado === "Reprovado") ? (
+                        <button
+                          type="button"
+                          className="px-3 py-2 bg-primary-color text-white rounded-xl hover:bg-blue-700 transition duration-300"
+                          onClick={() => handleApprove(article)}
+                        >
+                          Aprovar
+                        </button>
+                      ) : column.key === "botao2" && (article.revisado === "Pendente" || article.revisado === "Aprovado") ? (
+                        <button
+                          type="button"
+                          className="px-3 py-2 bg-red-800 text-white rounded-xl hover:bg-red-700 transition duration-300"
+                          onClick={() => handleReprove(article)}
+                        >
+                          Reprovar
+                        </button>
+                      ) : (column.key === "botao" || column.key === "botao2") ? (
+                        <div></div>
+                      ) : (
+                        <div className="truncate max-w-[200px]" title={article.titulo}>
+                            {article.titulo}
+                        </div>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </div>
+
+      <ModalPreview 
+        isOpen={isPreviewOpen} 
+        onClose={() => setIsPreviewOpen(false)} 
+        title="Detalhes do Artigo" 
+        data={previewData} 
+        type="artigo" 
+      />
+
+      <Dialog open={open} onClose={setOpen} className="relative z-10">
+        <DialogBackdrop
+          transition
+          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+        />
+        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <DialogPanel
+              transition
+              className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-[40vw] data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
+            >
+              <div className="bg-[#D8DBE2] pb-4 pt-5 sm:p-5 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <DialogTitle as="h2" className="text-lg font-semibold leading-6 text-gray-900">
+                      Cadastrar novo artigo
+                    </DialogTitle>
+                  </div>
+                </div>
+              </div>
+              <form action="POST">
+                <div className="grid grid-cols-2 justify-items-center pt-3 gap-y-[2vh]">
+                  <div>
+                    <h3 className="text-lg font-semibold">Título</h3>
+                    <input
+                      type="text"
+                      name="titulo"
+                      id="titulo"
+                      placeholder="Título"
+                      className="focus:outline-none border-b-2 w-[15vw]"
+                      onChange={(e) => {
+                        setChangedTitle(true)
+                        setNewArticle({ ...NewArticle, titulo: e.target.value })}}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">Área de pesquisa</h3>
+                    <input
+                      type="text"
+                      name="tema"
+                      id="tema"
+                      placeholder="Ex: Inteligência Artificial"
+                      className="focus:outline-none border-b-2 w-[15vw]"
+                      onChange={(e) => setNewArticle({ ...NewArticle, tema: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">Palavras-chave</h3>
+                    <input
+                      type="text"
+                      name="palavras"
+                      id="palavras"
+                      placeholder="Ex: Palavra1,Palavra2"
+                      className="focus:outline-none border-b-2 w-[15vw]"
+                      onChange={(e) => setNewArticle({ ...NewArticle, palavras_chave: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">Descrição</h3>
+                    <input
+                      type="text"
+                      name="descricao"
+                      id="descricao"
+                      placeholder="Descrição"
+                      className="focus:outline-none border-b-2 w-[15vw]"
+                      onChange={(e) => setNewArticle({ ...NewArticle, descricao: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">Resumo</h3>
+                    <input
+                        type="text"
+                        name="resumo"
+                        id="resumo"
+                        placeholder="Resumo"
+                        className="focus:outline-none border-b-2 w-[15vw]"
+                        onChange={(e) => setNewArticle({ ...NewArticle, resumo: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">Semestre</h3>
+                    <select
+                      name="semestre"
+                      id="semestre"
+                      value={NewArticle.data}
+                      className="focus:outline-none border-b-2 w-[15vw]"
+                      onChange={(e) => setNewArticle({ ...NewArticle, data: e.target.value })}>
+                      <option value="">Selecione um semestre</option>
+                      {semesterGenerator().map((semestre) => (
+                          <option key={semestre} value={semestre}>{semestre}</option>))}
+                    </select>
+                  </div>
+                  <div className="w-[15vw] relative">
+                    <input
+                      type="file"
+                      id="file-upload"
+                      className="hidden"
+                      onChange={uploadPdf}
+                    />
+                    <label
+                      htmlFor="file-upload"
+                      className={`absolute flex items-center px-3 py-2 rounded-md w-full text-dark-color text-xs font-semibold cursor-pointer ${
+                        !file ? "bg-green-500" : "bg-[#D8DBE2]"
+                      } hover:opacity-60 select-none whitespace-nowrap`}
+                      style={{
+                        textOverflow: 'ellipsis',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {file ? <span>{file.name}</span> : <span>Subir PDF</span>}
+                      <FaFileUpload className="ml-2" />
+                    </label>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">Equipe</h3>
+                    <input
+                      type="text"
+                      name="equipe"
+                      id="equipe"
+                      placeholder="Pessoa1,Pessoa2,Pessoa3"
+                      className="focus:outline-none border-b-2 w-[15vw]"
+                      onChange={(e) => setNewArticle({ ...NewArticle, equipe: e.target.value })}
+                    />
+                  </div>
+                </div>
+              </form>
+              <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <button
+                  type="button"
+                  className={`inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto ${
+                  changedTitle
+                    ? "bg-primary-color hover:bg-blue-700" 
+                    : "bg-gray-400 cursor-not-allowed"
+                  }`}
+                  onClick={() => handlePost(setOpen)}
+                  disabled={!changedTitle}
+                >
+                  Enviar
+                </button>
+                <button
+                  type="button"
+                  data-autofocus
+                  onClick={() => setOpen(false)}
+                  className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </DialogPanel>
+          </div>
+        </div>
+      </Dialog>
+    </>
+
+  )
+}
+
+export default ArticlesAdmin
