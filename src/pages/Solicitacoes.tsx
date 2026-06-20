@@ -49,9 +49,9 @@ function Solicitacoes() {
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-white px-4">
-          <h1 className="text-5xl font-bold mb-6 text-center">Solicitacoes</h1>
+          <h1 className="text-5xl font-bold mb-6 text-center">Solicitações</h1>
           <p className="text-2xl mb-8 text-center">
-            Veja os desafios enviados por empresas para receber ideias e solucoes
+            Veja os desafios enviados por empresas para receber ideias e soluções
           </p>
           <div className="flex w-full max-w-lg">
             <input
@@ -125,7 +125,7 @@ function Solicitacoes() {
               ))}
             </div>
           ) : (
-            <p className="text-center text-gray-600">Nenhuma solicitacao encontrada.</p>
+            <p className="text-center text-gray-600">Nenhuma solicitação encontrada.</p>
           )}
         </div>
       </section>
