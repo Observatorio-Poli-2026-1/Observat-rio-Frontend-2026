@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import poli1 from '../assets/poli1.png';
+import backgroundImage from '../assets/mainpage.jpg';
 import upeLogo from '../assets/logo-upe-60.png';
 import ufpbLogo from '../assets/parceiros/ufpb.png';
 import sadLogo from '../assets/parceiros/pe.png';
@@ -14,6 +15,7 @@ function Sobre() {
       {/* Seção Hero */}
       <section
         className="relative bg-cover bg-center h-96"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-white px-4">
