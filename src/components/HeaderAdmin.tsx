@@ -23,6 +23,8 @@ function HeaderAdmin() {
           <Nav.Link href="/admin-projects" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Projetos</Nav.Link>
           <Nav.Link href="/admin-articles" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Artigos</Nav.Link>
           <Nav.Link href="/admin-produtos" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Produtos</Nav.Link>
+          <Nav.Link href="/admin-solicitacoes" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Solicitações</Nav.Link>
+          <Nav.Link href="/admin-aprovacao-desafios" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Aprovar Desafios</Nav.Link>
           <Nav.Link href="/admin-gestao" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap" title="Gestão de Dúvidas e Sugestões">
             Gestão de Dúvidas
           </Nav.Link>
@@ -32,7 +34,7 @@ function HeaderAdmin() {
       <div className="flex items-center gap-4 ml-4 flex-shrink-0">
         {/* Botão de Edição de Perfil */}
         <Link 
-          to="/user-profile" 
+          to="/user-profile"
           className="flex items-center gap-2 text-primary-color hover:bg-slate-200 px-3 py-2 rounded-lg transition-colors group"
           title="Editar meu perfil"
         >
@@ -43,7 +45,7 @@ function HeaderAdmin() {
         </Link>
 
         {/* Botão de Logout */}
-        <button 
+        <button
           onClick={handleLogout}
           className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors duration-300 text-sm font-bold shadow-md"
           title="Sair do sistema"

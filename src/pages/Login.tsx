@@ -24,7 +24,6 @@ const Login = () => {
   }, []);
 
   const cooldownRemaining = getCooldownRemaining('login', 30_000, now);
-
   const handleResendEmail = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -180,7 +179,6 @@ const Login = () => {
               Aguarde {formatCooldown(cooldownRemaining)} antes de tentar novamente.
             </p>
           )}
-
           {error && <p className="mt-2 text-center text-red-600">{error}</p>}
 
           {showResend && (

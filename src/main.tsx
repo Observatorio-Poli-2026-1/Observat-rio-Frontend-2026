@@ -12,15 +12,19 @@ import ProjectsAdmin from './pages/Admin/Projects.tsx'
 import ArticlesAdmin from './pages/Admin/Artigos.tsx'
 import ProdutosAdmin from './pages/Admin/Produtos.tsx'
 import GestaoAdmin from './pages/Admin/Gestao.tsx'
+import SolicitacoesAdmin from './pages/Admin/Solicitacoes.tsx'
+import AprovacaoDesafios from './pages/Admin/AprovacaoDesafios.tsx'
 import Articles from './pages/Artigos.tsx'
 import Produtos from './pages/Produtos.tsx';
 import SearchResults from './pages/SearchResults.tsx';
 import Sobre from './pages/Sobre.tsx'
 import FAQ from './pages/FAQ.tsx'
+import Solicitacoes from './pages/Solicitacoes.tsx';
 import Login from './pages/Login.tsx'
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword.tsx';
 import Profile from './pages/User/Profile.tsx';
+import EmpresaSolicitacao from './pages/EmpresaSolicitacao.tsx';
 
 // Páginas do Usuário
 import Userprojects from './pages/User/User-projects.tsx';
@@ -84,6 +88,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path='/projetos/:slug' element={<Project />} />
           <Route path='/artigos' element={<Articles />} />
           <Route path='/produtos' element={<Produtos/>} />
+          <Route path='/solicitacoes' element={<Solicitacoes />} />
           <Route path='/buscar' element={<SearchResults />} />
           <Route path='/login' element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -95,11 +100,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path='/user-projects' element={<Userprojects />} />
           <Route path='/user-articles' element={<Userarticles />} />
           <Route path='/user-produtos' element={<Userprodutos />} />
+          <Route path='/empresa-solicitacoes' element={<EmpresaSolicitacao />} />
 
           {/* Rotas de Admin */}
           <Route path='/admin-projects' element={<ProjectsAdmin />} />
           <Route path='/admin-articles' element={<ArticlesAdmin />} />
           <Route path='/admin-produtos' element={<ProdutosAdmin/>} />
+          <Route path='/admin-solicitacoes' element={<SolicitacoesAdmin />} />
+          <Route path='/admin-aprovacao-desafios' element={<AprovacaoDesafios />} />
           <Route path='/admin-gestao' element={<GestaoAdmin/>} />
           <Route path='/user-profile' element={<Profile />} />
         </Routes>

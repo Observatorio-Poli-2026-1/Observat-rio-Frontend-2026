@@ -156,7 +156,6 @@ function Produtos() {
                           <h3 className="font-semibold">Descrição:</h3>
                           <p>{produto.descricao || "Descrição não disponível"}</p>
                         </div>
-
                         <button
                           className="mt-auto flex items-center text-blue-600 hover:text-blue-800 font-semibold"
                           onClick={() => handleDownload(produto.id)}

@@ -25,7 +25,6 @@ function App() {
   const form = useRef<HTMLFormElement>(null);
 
   const heroImages = [blocoB, poli1, polinoite];
-
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setInput(event.target.value);
   };

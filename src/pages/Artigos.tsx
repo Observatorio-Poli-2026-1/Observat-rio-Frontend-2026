@@ -166,7 +166,7 @@ function Articles() {
                           </div>
                         </div>
                         <div className="mb-4">
-                          <h3 className="font-semibold">Data de publication:</h3>
+                          <h3 className="font-semibold">Data de publicação:</h3>
                           <p>{article.data || "Data não disponível"}</p>
                         </div>
                         <div className="mb-4">

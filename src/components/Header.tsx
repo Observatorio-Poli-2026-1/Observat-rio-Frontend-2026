@@ -54,10 +54,10 @@ function Header() {
 
         {/* Nav Links Desktop */}
         <div className={`md:flex items-center space-x-6 ${isOpen ? 'block' : 'hidden'} md:block`}>
-          {['Início', 'Projetos', 'Artigos','Produtos', 'Sobre', 'FAQ'].map((item, index) => (
+          {['Início', 'Projetos', 'Artigos','Produtos', 'Solicitações', 'Sobre', 'FAQ'].map((item, index) => (
             <NavLink
               key={index}
-              to={item === 'Início' ? '/' : `/${item.toLowerCase()}`}
+              to={item === 'Início' ? '/' : item === 'Solicitações' ? '/solicitacoes' : `/${item.toLowerCase()}`}
               className={({ isActive }) =>
                 "text-lg font-medium hover:text-blue-600 transition duration-200 " +
                 (isActive ? "text-blue-700 underline underline-offset-4" : "text-primary-color")
@@ -108,10 +108,10 @@ function Header() {
       {isOpen && (
         <div className="md:hidden bg-slate-100 border-t border-gray-200">
           <ul className="space-y-4 px-6 py-4">
-            {['Início', 'Projetos', 'Artigos','Produtos', 'Sobre', 'FAQ'].map((item, index) => (
+            {['Início', 'Projetos', 'Artigos','Produtos', 'Solicitações', 'Sobre', 'FAQ'].map((item, index) => (
               <li key={index}>
                 <NavLink
-                  to={`/${item.toLowerCase()}`}
+                  to={item === 'Início' ? '/' : item === 'Solicitações' ? '/solicitacoes' : `/${item.toLowerCase()}`}
                   className={({ isActive }) =>
                     "block text-lg font-medium hover:text-blue-600 transition duration-200 " +
                     (isActive ? "text-blue-700 underline" : "text-primary-color")
