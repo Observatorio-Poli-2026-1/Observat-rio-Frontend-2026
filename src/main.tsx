@@ -14,6 +14,7 @@ import ProdutosAdmin from './pages/Admin/Produtos.tsx'
 import GestaoAdmin from './pages/Admin/Gestao.tsx'
 import SolicitacoesAdmin from './pages/Admin/Solicitacoes.tsx'
 import AprovacaoDesafios from './pages/Admin/AprovacaoDesafios.tsx'
+import NovoDesafioAdmin from './pages/Admin/NovoDesafio.tsx'
 import Articles from './pages/Artigos.tsx'
 import Produtos from './pages/Produtos.tsx';
 import SearchResults from './pages/SearchResults.tsx';
@@ -108,6 +109,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path='/admin-produtos' element={<ProdutosAdmin/>} />
           <Route path='/admin-solicitacoes' element={<SolicitacoesAdmin />} />
           <Route path='/admin-aprovacao-desafios' element={<AprovacaoDesafios />} />
+          <Route path='/admin-novo-desafio' element={<NovoDesafioAdmin />} />
           <Route path='/admin-gestao' element={<GestaoAdmin/>} />
           <Route path='/user-profile' element={<Profile />} />
         </Routes>

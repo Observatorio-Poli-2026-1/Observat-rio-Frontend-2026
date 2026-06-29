@@ -25,6 +25,7 @@ function HeaderAdmin() {
           <Nav.Link href="/admin-produtos" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Produtos</Nav.Link>
           <Nav.Link href="/admin-solicitacoes" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Solicitações</Nav.Link>
           <Nav.Link href="/admin-aprovacao-desafios" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Aprovar Desafios</Nav.Link>
+          <Nav.Link href="/admin-novo-desafio" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap">Novo Desafio</Nav.Link>
           <Nav.Link href="/admin-gestao" className="text-primary-color hover:text-blue-600 font-medium whitespace-nowrap" title="Gestão de Dúvidas e Sugestões">
             Gestão de Dúvidas
           </Nav.Link>
