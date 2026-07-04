@@ -70,8 +70,8 @@ Certifique-se de ter as ferramentas abaixo instaladas:
 
 ### Passo 1: Clone o Repositório e abra a pasta
 ```bash```
-```git clone https://github.com/PriscillaIA/poli-egs-frontend-equipe-2.git```
-```cd poli-egs-frontend-equipe-2.git```
+```git clone https://github.com/dgois11/poli-frontend```
+```cd poli-frontend```
 ### Passo 2: Instale as dependência e execute localmente
 ```npm install```
 ```npm run dev```
