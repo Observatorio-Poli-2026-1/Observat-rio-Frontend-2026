@@ -80,11 +80,15 @@ Certifique-se de ter as ferramentas abaixo instaladas:
 
 ## 📑 **Documentação**
 
-## Storys Trabalhas no Observatorio 2.0 no (Jira app)
-![one](<img width="859" height="392" alt="sprint1" src="https://github.com/user-attachments/assets/ff19bbc9-404d-4ad5-962b-307f961c683f" />)
-![two](<img width="879" height="230" alt="Captura de tela 2026-07-03 222939" src="https://github.com/user-attachments/assets/1bd5f9f1-20cf-4ea6-821c-5ba50baa84d7" />)
-![three](<img width="869" height="287" alt="Captura de tela 2026-07-03 223058" src="https://github.com/user-attachments/assets/81f3783f-a704-4ccc-8fdf-b627fece9041" />)
-![four](<img width="887" height="513" alt="qwdq" src="https://github.com/user-attachments/assets/a04c48a9-560f-4d25-bd9e-d6924a47497e" />)
+## Storys Trabalhadas no Observatório 3.0 (Jira)
+
+![Sprint 1](https://github.com/user-attachments/assets/ff19bbc9-404d-4ad5-962b-307f961c683f)
+
+![Sprint 2](https://github.com/user-attachments/assets/1bd5f9f1-20cf-4ea6-821c-5ba50baa84d7)
+
+![Sprint 3](https://github.com/user-attachments/assets/81f3783f-a704-4ccc-8fdf-b627fece9041)
+
+![Sprint 4](https://github.com/user-attachments/assets/a04c48a9-560f-4d25-bd9e-d6924a47497e)
 
 ## Equipe 5 do semestre 2026.1:##
 - **EMMANOEL BARBOSA(DEV FRONT-END E BACK-END)**
