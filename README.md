@@ -1,9 +1,8 @@
-# **Front_2025.1 - Observatório de Projetos**
+# **Front_2026.1 - Observatório de Projetos**
 
-Bem-vindo ao repositório de **Front-End** do **Observatório de Projetos** versão 2.0 da **POLI-UPE**! Este projeto faz parte da disciplina de Engenharia de Software do curso de Engenharia da Computação e foi projetado para oferecer uma plataforma colaborativa, onde projetos acadêmicos e artigos podem ser explorados, submetidos e gerenciados.
+Bem-vindo ao repositório de **Front-End** do **Observatório de Projetos** versão 3.0 da **POLI-UPE**! Este projeto faz parte da disciplina de Engenharia de Software do curso de Engenharia da Computação e foi projetado para oferecer uma plataforma colaborativa, onde projetos acadêmicos e artigos podem ser explorados, submetidos e gerenciados.
 
-### 💻 **Front-end**  
-- **URL**: [https://poli-egs-frontend-equipe-2.onrender.com](https://poli-egs-frontend-equipe-2.onrender.com)  
+### 💻 **Front-end**   
 - **Descrição**: Interface web acessível ao público, desenvolvida com React. Os usuários podem visualizar projetos, artigos e produtos cadastrados, bem como acessar as funcionalidades administrativas (caso tenham permissão). Esta é a camada de apresentação do sistema Observatório.
 
 ## 🌟 **Sobre o Projeto**
@@ -142,209 +141,65 @@ Certifique-se de ter as ferramentas abaixo instaladas:
 ![four](https://github.com/user-attachments/assets/1415f5ac-ead3-4cf1-854b-cd57e7a573d3)
 ![five](https://github.com/user-attachments/assets/146a8adc-60c9-4144-b971-56b84059abbd)
 
-## Equipe 2 do semestre 2025.1:##
-- **IAN TEIXEIRA PIMENTEL (DEV FRONT-END E BACK-END)**
-- **JULIANA DANZI D'AMORIM FERREIRA (DEV FRONT-END E BACK-END)**
-- **ALICE GALVÃO VASCONCELOS (DEV FRONT-END E BACK-END)**
-- **PRISCILLA DE SOUZA SILVA (SCRUM, PO, TESTER E DEV FRONT-END)**
-- **SILVIO ANDRÉ VITAL JUNIOR (GERENTE DE PROJETO)**
-- **ARTHUR SOBRAL DE MACÊDO (DEV FRONT-END E BACK-END)**
+## Equipe 5 do semestre 2026.1:##
+- **EMMANOEL BARBOSA(DEV FRONT-END E BACK-END)**
+- **RANIE CAMPOS LINS (DEV FRONT-END E BACK-END)**
+- **DIEGO AMARAL (DEV FRONT-END E BACK-END)**
+- **JOSÉ LÚCIO (DEV FRONT-END E BACK-END)**
+- **LUIZ ANDRÉ (SCRUM MASTER)**
+- **MARCIA REJANE (GERENTE DE PROJETO)**
 
-## 2025.2
-✨ Atualização 1 (Validação de Senha)
-A primeira sprint focou em elevar a segurança e a experiência do usuário durante o processo de registro, implementando uma funcionalidade robusta de validação de senha.
+## 2026.1
+# ✨ Atualização 1 – Gestão de Submissão de Desafios
 
+Foi implementado um novo fluxo de gerenciamento de desafios no Observatório, permitindo maior controle e segurança sobre o conteúdo disponibilizado na plataforma.
 
-🔒 Destaques da Funcionalidade de Validação de Senha
-Feedback em Tempo Real: Implementamos um sistema que fornece feedback em tempo real sobre a força da senha, melhorando a experiência do usuário durante o registro.
+## Funcionalidades Implementadas
+- Perfis administradores agora podem cadastrar novos desafios diretamente na plataforma.
+- Todo desafio submetido passa por um processo de moderação.
+- Administradores podem aprovar ou rejeitar desafios enviados por outros perfis administrativos, garantindo maior qualidade e consistência do conteúdo publicado.
 
-Requisitos de Segurança: A aplicação agora verifica se a senha atende a cinco critérios rigorosos de segurança em tempo real:
+---
 
-- Pelo menos 8 caracteres.
-- Uma letra maiúscula.
-- Uma letra minúscula.
-- Um número.
-- Um caractere especial.
+# ✨ Atualização 2 – Segurança da Plataforma
 
-Controle de Acesso: O botão "Registrar" é mantido desabilitado até que a senha atenda a todos os critérios e as senhas (senha e confirmação) sejam idênticas.
+A infraestrutura da aplicação recebeu importantes melhorias voltadas à segurança, reduzindo riscos de ataques e fortalecendo a proteção dos serviços.
 
-Componente Reutilizável: A lógica de força da senha foi encapsulada no componente React PasswordStrengthMeter.tsx (utilizando a biblioteca zxcvbn), que é reutilizável e responsável pela apresentação visual da força da senha.
+## Melhorias Implementadas
+- Implementação de mecanismos de **Rate Limiting**, limitando o número de requisições por usuário e mitigando ataques de força bruta e abuso da API.
+- Correção de vulnerabilidades e falhas de segurança identificadas durante o desenvolvimento.
+- Aprimoramento das validações de segurança em pontos críticos da aplicação.
 
+---
 
-⚙️ Modificações Técnicas
-Implementação: O novo sistema foi integrado na página src/pages/Register.tsx.
+# ✨ Atualização 3 – Correção e Estabilização
 
-Ambiente Docker: O arquivo docker-compose.yaml foi modificado para corrigir problemas de comunicação entre o frontend e o backend, garantindo um ambiente de desenvolvimento eficaz.
+Foi realizado um trabalho completo de estabilização da aplicação, solucionando problemas herdados das versões anteriores.
 
-Configuração: Criamos o arquivo .env no diretório raiz do projeto (poli-egs-frontend-equipe-5/.env) para definir variáveis de ambiente essenciais e corrigir problemas de ambiente.
+## Correções Realizadas
+- Resolução de todos os bugs identificados na implementação desenvolvida pela equipe anterior.
+- Correção de falhas que comprometiam a estabilidade da plataforma.
+- Refinamento geral do funcionamento do sistema, proporcionando uma experiência mais confiável aos usuários.
 
+---
 
-✨ Atualização 2 (Verificação de E-mail)
-A interface do usuário foi ajustada para lidar com o novo fluxo de verificação de e-mail, garantindo uma melhor experiência após o cadastro.
+# ✨ Atualização 4 – Refatoração da Identidade Visual
 
-Página de Registro (src/pages/Register.tsx):
-Após o cadastro bem-sucedido, o usuário não é mais redirecionado diretamente para o login.
-Uma mensagem informativa é exibida, comunicando que o cadastro foi concluído e que um e-mail de verificação foi enviado.
+As principais páginas públicas do Observatório passaram por uma reformulação visual com foco em usabilidade, organização e experiência do usuário.
 
-Página de Login (src/pages/LoginTest.tsx):
-A página foi ajustada para capturar e exibir a mensagem de erro específica enviada pelo backend caso o usuário tente realizar o login sem ter confirmado o e-mail.
+## Melhorias Visuais
+- Refatoração da identidade visual das abas iniciais do Observatório.
+- Padronização dos componentes gráficos.
+- Atualização do layout para uma interface mais moderna, intuitiva e alinhada à identidade institucional.
 
+---
 
-✨ Atualização 3 (Usabilidade e Fluxos de Navegação)
-A Sprint 3 foi inteiramente focada em melhorias de usabilidade (UX) e na criação de fluxos de navegação essenciais na interface, tornando o sistema mais intuitivo e acessível.
+# ✨ Atualização 5 – Deploy da Plataforma
 
-Funcionalidade "Mostrar Senha" (Login): Implementada a opção de visualizar a senha digitada na tela de Login, melhorando a conveniência e reduzindo erros de digitação.
+Como etapa final do projeto, o Observatório foi disponibilizado para utilização em ambiente de produção.
 
-Fluxo "Breadcrumbs": Criado o fluxo de navegação "Breadcrumbs" na área administrativa, que ajuda o usuário a se orientar dentro do sistema.
+## Deploy
+- Realizado o deploy oficial do Observatório na infraestrutura da Escola Politécnica de Pernambuco (POLI).
+- A plataforma encontra-se disponível na rede institucional, permitindo o acesso pelos usuários autorizados.
+- Foram realizadas validações finais de funcionamento e integração após a publicação.
 
-Tela "Esqueci Minha Senha": A tela e o fluxo de recuperação de senha foram desenvolvidos e concluídos, garantindo que usuários possam recuperar o acesso à conta.
-
-Implementação Full-Stack Futura: O planejamento inclui a tarefa de inserir screenshots do projeto, que será implementada em uma tarefa Full-Stack.
-
-
-✨ Atualização 04 (Adição e Remoção de Imagens)
-O foco principal da Sprint 4 foi no lado do backend e serviços. No frontend, esta sprint prepara o terreno para a integração da funcionalidade de gestão de imagens.
-
-A implementação da Sprint 4 foi focada na criação da infraestrutura de backend (serviços e endpoints de API) para permitir a adição e remoção de imagens dos projetos.
-
-Esta funcionalidade cobre o requisito de Inserir screenshots do projeto listado em planos futuros da Sprint 3.
-
-O frontend agora está pronto para integrar os novos endpoints de gestão de imagens do projeto, permitindo que os usuários façam o upload e remoção de screenshots.
-
-
-✨ Atualização 05 (Autenticação Resiliente, Imagens e Navegação)
-A Sprint 5 consolidou melhorias essenciais de usabilidade e segurança, garantindo uma experiência mais fluida para o administrador e reforçando a resiliência do sistema.
-
-Gestão de Imagens de Projetos: O frontend foi atualizado para suportar o novo recurso de upload de imagens e agora permite que o usuário envie uma ou várias imagens relacionadas a cada projeto cadastrado. Isso amplia a capacidade de documentação visual dos projetos.
-
-Tratamento de Autenticação Resiliente:
-Implementado um recurso de segurança: se houver uma falha na verificação do token, o sistema espera 10 segundos e tenta novamente utilizando o mesmo token, garantindo maior resiliência no acesso.
-
-Aprimoramento da Área Administrativa (Breadcrumbs): Adicionados Breadcrumbs (trilhas de navegação) na área administrativa, que indicam o caminho percorrido (ex: Dashboard, Gerenciar Artigos, Editar Artigo). Este recurso facilita a orientação e reduz o tempo gasto para retornar a páginas anteriores.
-
-
-✨ Atualização 06 (Vitrine e Detalhes dos Projetos)
-A Sprint 6 concentrou-se na melhoria da experiência do usuário na visualização de projetos, implementando a funcionalidade de filtragem e exibição detalhada de conteúdo.
-
-Página de Projetos Aprimorada: A página inicial de exibição de projetos (/projetos) agora possui um design mais amigável, listando os projetos em formato de cards.
-
-Funcionalidade de Filtros: Implementada a barra lateral de Filtros, permitindo que os usuários busquem projetos por diversos critérios:
-- Área do projeto.
-- Ano/Semestre.
-- Nome, palavra-chave (query de pesquisa).
-- Integrantes.
-
-Visualização Detalhada do Projeto:
-Ao clicar em "Ver mais", o usuário é direcionado para uma página dedicada ao projeto.
-A página exibe todas as imagens e vídeos cadastrados.
-As informações detalhadas incluem o título, descrição, tecnologias utilizadas, links úteis (repositório e vídeo técnico), equipe, pessoa/organização parceira, e semestre/ano.
-
-
-✨ Atualização 07 (Conteúdo Público e Interação)
-A Sprint 7 finalizou a estrutura principal da interface pública, tornando o Observatório um recurso informativo completo, adicionando a visualização de artigos e um canal de comunicação.
-
-Página Inicial Completa: A página Inicial agora exibe os Temas em Destaque, incentivando a navegação por áreas de conhecimento.
-
-Seção de Artigos Científicos:
-Criada a página dedicada a Artigos Científicos, que permite explorar os artigos e publicações acadêmicas.
-Cada card de artigo exibe informações como autores, palavras-chave, área de pesquisa e links de acesso (Download, GitHub, Externo).
-Os links permitem o acesso direto ao PDF de publicação, ao repositório GitHub e a links externos do artigo.
-
-Formulário "Entre em Contato": Implementado o formulário "Entre em Contato", que permite que usuários enviem dúvidas, sugestões ou mensagens para a equipe.
-
-Melhorias na Visualização de Projetos: A página de detalhes do projeto foi atualizada, exibindo claramente a equipe, tecnologias (tags), parceiros, semestre e links úteis (Repositório e Vídeo Técnico).
-
-
-✨ Atualização 08 (Interatividade e Refinamento Visual)
-A Sprint final focou em elevar o nível da interface pública, tornando-a mais interativa e visualmente agradável, além de consolidar a infraestrutura de segurança.
-
-Área de Comentários (Nova Interatividade):
-Implementamos a tão aguardada Área de Comentários nas páginas de Artigos e Projetos.
-Usuários logados agora podem interagir e deixar feedback diretamente na ferramenta, centralizando o feedback acadêmico.
-
-Melhorias Visuais e de Fluxo (UX/UI):
-- Nova Proposta Visual: A interface visual foi aprimorada com uma nova proposta para a página "Sobre o Projeto", adotando um estilo portfólio para valorizar o trabalho dos alunos.
-- Otimização de Links: Criamos botões de ação dedicados para acessar links úteis (GitHub, Vídeo Técnico, Download), agilizando o acesso do usuário aos materiais.
-
-Refinamento Geral: Adicionamos feedbacks visuais de carregamento (loading) e harmonizamos o layout, rodapés e logos para garantir uma navegação fluida em toda a plataforma.
-
-
-🏆 Atualização final (Encerramento do Projeto e Estabilização)
-Esta atualização marca a conclusão do projeto. O foco principal foi a estabilização do Backoffice (Admin), o aprimoramento da interface pública e a eliminação de bugs críticos.
-
-Conclusão de UX/UI: Finalizada a nova proposta visual para a página "Sobre o Projeto", adotando um estilo portfólio para valorizar os trabalhos acadêmicos.
-
-Interatividade Implementada: Implementada a Área de Comentários nas páginas de Projetos e Artigos, permitindo a interação direta de usuários logados.
-
-Correções de Estabilidade:
-- Corrigidos bugs que causavam o deslogamento da plataforma (no Backoffice) ao tentar aceitar/rejeitar artigos ou projetos e ao alterar dados do usuário.
-- Otimizado o fluxo de Recuperação de Senha, com geração segura de tokens e validação de e-mail.
-
-Refinamento Final: O layout recebeu feedbacks visuais de carregamento (loading) e os rodapés/logos foram harmonizados.
-
-
-. Relatório Detalhado de Novos Bugs Encontrados
-
-Bug 4: Falta de Feedback Visual Durante o Carregamento
-
-   * Arquivo Afetado: poli-egs-frontend-equipe-5/src/pages/Register.tsx.
-   * Descrição: Ao clicar em "Registrar", a interface não mostra nenhum indicador de carregamento (como um spinner).
-   * Impacto: Causa uma má experiência de usuário (UX), pois a pessoa não sabe se a aplicação está processando a
-     requisição, principalmente em redes lentas.
-   * Sugestão de Correção: Implementar um estado de loading que, quando ativo, desabilita o botão e exibe um texto como
-     "Registrando..." para informar ao usuário que a ação está em andamento.
-
-Bug 5: Uso de alert() para Feedback de Sucesso
-
-   * Arquivo Afetado: poli-egs-frontend-equipe-5/src/pages/Register.tsx.
-   * Descrição: Uma mensagem de sucesso é exibida usando o alert() nativo do navegador.
-   * Impacto: alert() bloqueia a interface, tem aparência datada e é inconsistente com o resto da aplicação, que já usa
-     notificações toast (da biblioteca react-toastify).
-   * Sugestão de Correção: Substituir o alert() por uma notificação toast.success() para manter a consistência visual e
-     uma melhor experiência de usuário.
-
-Bug 6: Tipos do Firebase Desatualizados e Desnecessários
-
-   * Arquivo Afetado: poli-egs-frontend-equipe-5/package.json.
-   * Descrição: O projeto possui a dependência @types/firebase, que é para versões muito antigas do Firebase. O pacote
-     firebase atual já inclui seus próprios tipos TypeScript.
-   * Impacto: Pode causar conflitos de tipos, dificultar o autocomplete no editor e esconder bugs, pois o compilador
-     pode usar definições erradas.
-   * Sugestão de Correção: Remover completamente o pacote @types/firebase do projeto com o comando npm uninstall
-     @types/firebase.
-
-Bug 7: URLs de Imagem Codificadas
-
-   * Arquivo Afetado: poli-egs-frontend-equipe-5/src/components/Header.tsx , poli-egs-frontend-equipe-5/src/pages/Sobre.tsx
-   * Descrição: As imagens (logotipos, fotos) são carregadas usando URLs diretas de websites externos
-     (upload.wikimedia.org, s2.glbimg.com, www.sad.pe.gov.br) que estão codificadas ("hardcoded") diretamente no
-     código-fonte dos componentes Header.tsx e Sobre.tsx.
-   * Impacto: Links Quebrados: Se as imagens forem removidas ou suas URLs mudarem nos sites externos, as imagens não serão
-         exibidas em nossa aplicação.
-              Performance: A dependência de servidores externos para recursos visuais pode aumentar a latência de
-         carregamento da página.
-              Falta de Controle: Não há controle sobre a disponibilidade ou as versões das imagens externas.
-   * Sugestão de Correção: Baixar as imagens externas e adicioná-las aos diretórios de ativos do projeto (ex:
-     public/images/ ou src/assets/). Atualizar os componentes Header.tsx e Sobre.tsx para usar importações de módulos ou
-     caminhos relativos para referenciar essas imagens localmente.
-
-Bug 9: Criação de Artigos em Branco sem Validação de Campos Obrigatórios
-
-   * Arquivo Afetado: poli-egs-frontend-equipe-5/src/pages/Admin/Artigos.tsx
-   * Descrição: O formulário "Cadastrar novo artigo" permite que um usuário clique em "Enviar" sem preencher nenhum dos
-     campos (como Título, Área de pesquisa, Semestre, etc.). Não há validação no lado do cliente (frontend) para
-     garantir que os campos essenciais sejam preenchidos. Em vez de validar, a função handlePost envia valores padrão
-     como "Título não informado".
-   * Impacto: Permite a criação de "artigos fantasmas" no banco de dados, com valores genéricos. Isso polui o banco de
-     dados com entradas inúteis, dificulta a busca e o gerenciamento, e força os administradores a terem que limpar
-     esses dados manualmente.
-   * Sugestão de Correção:
-          Validação no Frontend: Na função handlePost em Artigos.tsx, antes de enviar a requisição, adicione uma
-            verificação para garantir que os campos obrigatórios (ex: NewArticle.titulo, NewArticle.data (semestre), e o
-            arquivo PDF) não estão vazios. Se estiverem, exiba um erro usando toast.error() e impeça o envio.
-          Feedback Visual: Adicione o atributo required aos elementos <input> e <select> no JSX do formulário para usar
-            a validação nativa do navegador e dar feedback imediato ao usuário.
-          Desabilitar Botão: Aprimore a lógica para manter o botão "Enviar" desabilitado (disabled) até que todos os
-            campos obrigatórios tenham sido preenchidos corretamente.
-
-##Os bugs 01, 02, 03 e 08 estão no backend.
